@@ -2,10 +2,17 @@
 <html>
 	<head>
 		<title>Final Project – Narrative Visualization</title>
+		<script src="https://d3js.org/d3.v3.js"></script>
 	</head>
 
 	<body>
-		<p>Hello, this is Jay.</p>
+		
+		<script type="text/javascript">
+			d3.select(“body”).append(“p”).text(“Our First Paragraph using D3!”);
+			var svg = d3.select(“body”).append(“svg”).attr({“width”:450,”height”:400});
+			svg.append(“circle”).attr({“r”:”30px”, “cx”:”50px”, “cy”:”50px”});
+		</script>
+		
 	</body>
 
 </html>
