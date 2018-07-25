@@ -9,12 +9,11 @@
 		
 		<script type="text/javascript">
 			alert("1");
-			
-			d3.csv("TestFile.csv")
-  			.get(function(data) {
-        	console.log(data);
-        	alert("2");
-  			});
+  			
+  			d3.csv("/data/employees.csv", function(data) {
+  				alert("2");
+    			alert(data);
+			});
 			
 			/*d3.csv("/data/Cost-of-Living-Index.csv", function(d) {
 			  return {
