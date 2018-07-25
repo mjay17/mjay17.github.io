@@ -2,15 +2,42 @@
 <html>
 	<head>
 		<title>Final Project – Narrative Visualization</title>
-		<script src="https://d3js.org/d3.v3.js"></script>
+		<script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
 	</head>
 
 	<body>
 		
 		<script type="text/javascript">
-			d3.select(“body”).append(“p”).text(“Our First Paragraph using D3!”);
-			var svg = d3.select(“body”).append(“svg”).attr({“width”:450,”height”:400});
-			svg.append(“circle”).attr({“r”:”30px”, “cx”:”50px”, “cy”:”50px”});
+			alert("1");
+			
+			d3.csv("TestFile.csv")
+  			.get(function(data) {
+        	console.log(data);
+        	alert("2");
+  			});
+			
+			/*d3.csv("/data/Cost-of-Living-Index.csv", function(d) {
+			  return {
+				city : d.City,
+				state : d.State,
+				rank : +d.Rank
+				//year : +d.Year,
+				//cost_of_living_index : +d["Cost of Living Index"],
+				//rent_index : +d["Rent Index"],
+				//groceries_index : +d["Groceries Index"],
+				//restaurant_price_index : +d["Restaurant Price Index"],
+				//local_purchasing_power_index : +d["Local Purchasing Power Index"]
+			  };
+			}, function(data) {
+			  //console.log(data[0]);
+			  alert("in")
+			  d3.select("body").append("p").text(data[0]);
+			});*/
+			
+			d3.select("body").style("background-color", "#FFEFD5");
+			d3.select("body").append("p").text("Welcome!");
+			//var svg = d3.select(“body”).append(“svg”).attr({“width”:450,”height”:400});
+			//svg.append(“circle”).attr({“r”:”30px”, “cx”:”50px”, “cy”:”50px”});
 		</script>
 		
 	</body>
