@@ -35,6 +35,8 @@ var x = d3.scaleTime().range([0, width]),
     y = d3.scaleLinear().range([height, 0]),
     z = d3.scaleOrdinal(d3.schemeCategory10);
 
+var color = d3.scaleOrdinal(d3.schemeCategory10);
+
 var line = d3.line()
     .curve(d3.curveBasis)
     .x(function(d) { return x(d.date); })
@@ -42,7 +44,9 @@ var line = d3.line()
 
 d3.tsv("TestFile.txt", type, function(data) {
   
-  var cities = d3.keys(data).filter(function(key) { return key !== "date"; }).map(function(id) {
+  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
+  
+  var cities = color.domain().map(function(id) {
     return {
       id: id,
       values: data.map(function(d) {
