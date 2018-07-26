@@ -9,14 +9,8 @@
 		
 		<script type="text/javascript">
   			
-  			function type(d, _, columns) {
-			  d.date = parseTime(d.date);
-			  for (var i = 1, n = columns.length, c; i < n; ++i) d[c = columns[i]] = +d[c];
-			  return d;
-			}
-
-  			d3.tsv("TestFile.csv", type, function(error, data) {
-			  if (error) throw error;
+			/*
+  			d3.tsv("TestFile.csv", function(error, data) {
 
 			  var cities = data.columns.slice(1).map(function(id) {
 				return {
@@ -26,7 +20,7 @@
 					})
 					}
 				  })
-			  });
+			  });*/
 			
 			/*d3.tsv("/data/Cost-of-Living-Index.csv", type, function(error, data) {	
 			  if (error) throw error;
@@ -46,10 +40,10 @@
 				};
 			  });*/
   
-			/*d3.tsv("/data/Cost-of-Living-Index.csv", function(d) {
+			d3.tsv("/data/Cost-of-Living-Index.csv", function(d) {
 			  return {
-				city : d.City,
-				state : d.State,
+				//city : d.City,
+				//state : d.State,
 				rank : +d.Rank
 				//year : +d.Year,
 				//cost_of_living_index : +d["Cost of Living Index"],
@@ -61,8 +55,8 @@
 			}, function(data) {
 			  //console.log(data[0]);
 			  //alert("in")
-			  d3.select("body").append("p").text(data[0]);
-			});*/
+			  d3.select("body").append("p").text(data.City);
+			});
 			
 			d3.select("body").style("background-color", "#FFEFD5");
 			d3.select("body").append("p").text("Welcome!");
