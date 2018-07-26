@@ -40,12 +40,15 @@ var line = d3.line()
     .x(function(d) { return x(d.date); })
     .y(function(d) { return y(d.temperature); });
 
-d3.tsv("TestFile.txt", type, function(data) {
-  
-  var cities = d3.keys(data).filter(function(key) { return key !== "date"; }).map(function(id) {
+d3.tsv("data.tsv", type, function(error, data) {
+  if (error) throw error;
+
+  var cities = data.columns.slice(1).map(function(id) {
     return {
       id: id,
-      values: {date: data.date, temperature: data[id]}
+      values: data.map(function(d) {
+        return {date: d.date, temperature: d[id]};
+      })
     };
   });
 
