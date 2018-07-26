@@ -39,7 +39,8 @@
 				  })
 				};
 			  });*/
-  
+  			var result = [];
+  			
 			d3.tsv("/data/Cost-of-Living-Index.csv", function(d) {
 			  return {
 				//city : d.City,
@@ -55,6 +56,7 @@
 			}, function(data) {
 			  //console.log(data[0]);
 			  //alert("in")
+			  result.push(data);
 			  d3.select("body").append("p").text(data.City);
 			});
 			
