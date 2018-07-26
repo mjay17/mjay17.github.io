@@ -15,7 +15,7 @@
     			alert(data[0]);
 			});
 			
-			d3.csv("/data/Cost-of-Living-Index.csv", function(d) {
+			d3.tsv("/data/Cost-of-Living-Index.csv", function(d) {
 			  return {
 				city : d.City,
 				state : d.State,
@@ -29,7 +29,7 @@
 			  };
 			}, function(data) {
 			  //console.log(data[0]);
-			  alert("in")
+			  //alert("in")
 			  d3.select("body").append("p").text(data[0]);
 			});
 			
