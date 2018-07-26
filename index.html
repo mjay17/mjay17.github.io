@@ -8,8 +8,13 @@
 	<body>
 		
 		<script type="text/javascript">
-			alert("1");
   			
+  			function type(d, _, columns) {
+			  d.date = parseTime(d.date);
+			  for (var i = 1, n = columns.length, c; i < n; ++i) d[c = columns[i]] = +d[c];
+			  return d;
+			}
+
   			d3.tsv("TestFile.csv", type, function(error, data) {
 			  if (error) throw error;
 
@@ -18,19 +23,19 @@
 				  id: id,
 				  values: data.map(function(d) {
 					return {date: d.date, temperature: d[id]};
+					})
+					}
 				  })
-				};
 			  });
 			
-			d3.tsv("/data/Cost-of-Living-Index.csv", type, function(error, data) {	
+			/*d3.tsv("/data/Cost-of-Living-Index.csv", type, function(error, data) {	
 			  if (error) throw error;
 			  
-			  // Coerce the data to numbers.
 			  data.forEach(function(d) {
 				d.Rank = +d.Rank;
 				d.Year = +d.Year;
-				
-			  });
+				});
+			  });*/
 
 			  /*var cities = data.map(function(id) {
 				return {
