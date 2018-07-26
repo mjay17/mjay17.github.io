@@ -10,12 +10,38 @@
 		<script type="text/javascript">
 			alert("1");
   			
-  			d3.csv("TestFile.csv", function(data) {
-  				alert("2");
-    			alert(data[0]);
-			});
+  			d3.tsv("TestFile.csv", type, function(error, data) {
+			  if (error) throw error;
+
+			  var cities = data.columns.slice(1).map(function(id) {
+				return {
+				  id: id,
+				  values: data.map(function(d) {
+					return {date: d.date, temperature: d[id]};
+				  })
+				};
+			  });
 			
-			d3.tsv("/data/Cost-of-Living-Index.csv", function(d) {
+			d3.tsv("/data/Cost-of-Living-Index.csv", type, function(error, data) {	
+			  if (error) throw error;
+			  
+			  // Coerce the data to numbers.
+			  data.forEach(function(d) {
+				d.Rank = +d.Rank;
+				d.Year = +d.Year;
+				
+			  });
+
+			  /*var cities = data.map(function(id) {
+				return {
+				  city: id.City,
+				  values: data.map(function(d) {
+					return {date: d.date, temperature: d[id]};
+				  })
+				};
+			  });*/
+  
+			/*d3.tsv("/data/Cost-of-Living-Index.csv", function(d) {
 			  return {
 				city : d.City,
 				state : d.State,
@@ -31,7 +57,7 @@
 			  //console.log(data[0]);
 			  //alert("in")
 			  d3.select("body").append("p").text(data[0]);
-			});
+			});*/
 			
 			d3.select("body").style("background-color", "#FFEFD5");
 			d3.select("body").append("p").text("Welcome!");
