@@ -42,7 +42,7 @@ var line = d3.line()
 
 d3.tsv("TestFile.txt", type, function(data) {
   
-  var cities = data.columns.slice(1).map(function(id) {
+  var cities = d3.keys(data).filter(function(key) { return key !== "date"; }).map(function(id) {
     return {
       id: id,
       values: data.map(function(d) {
