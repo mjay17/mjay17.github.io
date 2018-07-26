@@ -40,6 +40,15 @@ var line = d3.line()
     .x(function(d) { return x(d.date); })
     .y(function(d) { return y(d.temperature); });
 
+d3.tsv("/data/Cost-of-Living-Index.csv", function(error, data) {
+  if (error) throw error;
+
+  var symbols = d3.nest()
+      .key(function(d) { return d.City; })
+      .entries(data);
+   
+  });
+
 d3.tsv("TestFile.txt", type, function(error, data) {
   if (error) throw error;
 
@@ -51,7 +60,7 @@ d3.tsv("TestFile.txt", type, function(error, data) {
       })
     };
   });
-
+      
   x.domain(d3.extent(data, function(d) { return d.date; }));
 
   y.domain([
