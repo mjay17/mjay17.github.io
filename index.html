@@ -12,10 +12,10 @@
   			
   			d3.csv("TestFile.csv", function(data) {
   				alert("2");
-    			alert(data);
+    			alert(data[0]);
 			});
 			
-			/*d3.csv("/data/Cost-of-Living-Index.csv", function(d) {
+			d3.csv("/data/Cost-of-Living-Index.csv", function(d) {
 			  return {
 				city : d.City,
 				state : d.State,
@@ -31,7 +31,7 @@
 			  //console.log(data[0]);
 			  alert("in")
 			  d3.select("body").append("p").text(data[0]);
-			});*/
+			});
 			
 			d3.select("body").style("background-color", "#FFEFD5");
 			d3.select("body").append("p").text("Welcome!");
