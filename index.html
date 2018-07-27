@@ -111,16 +111,18 @@
 		}
 			
 		function load_plot_data() {
+			var cities;
+			
 			d3.tsv("/data/DS-Data.txt", type, function(error, data) {
 				if (error) throw error;
 
-				var cities = d3.nest()
+				cities = d3.nest()
 							.key(function(d) { return d.City; })
 							.entries(data);
 							
-				return cities;
-							
-			});					  
+			});	
+			
+			return cities;			  
 		}
 						
 		function make_plot(cities, plot_type) {
