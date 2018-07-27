@@ -142,6 +142,7 @@ d3.tsv("TestFile.txt", type, function(error, data) {
 			.on("change", function () {
 			var sect = document.getElementById("inds");
 			var section = sect.options[sect.selectedIndex].value;
+			});
 				    
   //x.domain(d3.extent(data, function(d) { return d.Year; }));
   x.domain([
