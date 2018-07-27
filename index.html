@@ -138,10 +138,11 @@ d3.tsv("TestFile.txt", type, function(error, data) {
       .key(function(d) { return d.City; })
       .entries(data);
   
+  var section;
   d3.select('#index')
 			.on("change", function () {
 			var sect = document.getElementById("index");
-			var section = sect.options[sect.selectedIndex].value;
+			section = sect.options[sect.selectedIndex].value;
 			});
 				    
   //x.domain(d3.extent(data, function(d) { return d.Year; }));
