@@ -111,7 +111,7 @@ d3.tsv("TestFile.txt", type, function(error, data) {
 
   g.append("g")
       .attr("class", "grid")
-      .call(d3.axisLeft(y).ticks(5).tickSize(-width)..tickFormat(""))
+      .call(d3.axisLeft(y).ticks(5).tickSize(-width).tickFormat(""))
       .append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", -45)
