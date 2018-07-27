@@ -8,6 +8,14 @@
 
 <body>
 
+<select id = "index">
+		<option value="Groceries_Index" selected="selected">Groceries Index</option>
+		<option value="Rent_Index">Rent Index</option>
+		<option value="Restaurant_Price_Index">Restaurant Price Index</option>
+		<option value="Local_Purchasing_Power_Index">Local Purchasing Power Index</option>
+		<option value="Cost_of_Living_Plus_Rent_Index">Cost of Living Plus Rent Index</option>
+</select>
+
 <style>
 .grid line {
   stroke: lightgrey;
@@ -25,7 +33,11 @@
   stroke-width: 1.5px;
 }
 
-
+#index{
+	position:absolute;
+	top:10px;
+	right:90px;
+}
 
 </style>
 <svg width = "960" height = "500"></svg>
@@ -59,7 +71,7 @@ var x = d3.scaleTime().range([0, width]),
 var line = d3.line()
     .curve(d3.curveBasis)
     .x(function(d) { return x(d.Year); })
-    .y(function(d) { return y(d.Cost_of_Living_Index); });
+    .y(function(d, s) { if(s == "Groceries_Index") {return y(d.Cost_of_Living_Index); } else {return y(d.Groceries_Index);}});
 
 const anot_type = d3.annotationCalloutCircle
 
@@ -125,7 +137,12 @@ d3.tsv("TestFile.txt", type, function(error, data) {
   var cities = d3.nest()
       .key(function(d) { return d.City; })
       .entries(data);
-      
+  
+  d3.select('#index')
+			.on("change", function () {
+			var sect = document.getElementById("inds");
+			var section = sect.options[sect.selectedIndex].value;
+				    
   //x.domain(d3.extent(data, function(d) { return d.Year; }));
   x.domain([
     d3.min(cities, function(c) { return d3.min(c.values, function(d) { return d.Year; }); }),
@@ -187,7 +204,7 @@ d3.tsv("TestFile.txt", type, function(error, data) {
 
   city.append("path")
       .attr("class", "line")
-      .attr("d", function(d) { return line(d.values); })
+      .attr("d", function(d) { return line(d.values, section); })
       .style("stroke", function(d) { return z(d.key); });
 
   city.append("text")
