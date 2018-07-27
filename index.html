@@ -122,8 +122,6 @@ d3.tsv("TestFile.txt", type, function(error, data) {
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x).tickFormat(d3.format('.4')))
       .append("text")  
-      .attr("class", "x label")
-      .attr("text-anchor", "end")
       .attr("x", width/2)
       .attr("y", height + margin.top + 10)
       .text("Year");
