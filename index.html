@@ -28,7 +28,7 @@ var svg = d3.select("svg"),
     width = svg.attr("width") - margin.left - margin.right,
     height = svg.attr("height") - margin.top - margin.bottom,
     g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    g.append('text').html('Cost of Living Index for large US metropolitan areas').attr('x', 300);
+    g.append('text').html('Cost of Living Index for large US metropolitan areas').attr('x', 275);
 
 var parseTime = d3.timeParse("%Y%m%d");
 
@@ -89,8 +89,7 @@ d3.tsv("TestFile.txt", type, function(error, data) {
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x).tickFormat(d3.format('.4')))
       .append("text")             
-      .attr("transform", "translate(" + (width/2) + " ," + 
-                           (height + margin.top + 20) + ")")
+      .attr("x", 240)
       .style("text-anchor", "middle")
       .text("Year");
 
@@ -102,7 +101,6 @@ d3.tsv("TestFile.txt", type, function(error, data) {
       .attr("y", -45)
       .attr("dy", "0.71em")
       .attr("fill", "#000")
-      .style("text-anchor", "middle")
       .text("Cost of Living Index");
 
   var city = g.selectAll(".city")
