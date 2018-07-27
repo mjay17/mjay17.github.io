@@ -63,21 +63,21 @@ d3.tsv("TestFile.txt", type, function(error, data) {
   });
   */
   
-  d3.tsv("/data/DS-Data.txt", function(error, data) {
+  d3.tsv("/data/DS-Data.txt", type, function(error, data) {
   if (error) throw error;
 
   var cities = d3.nest()
       .key(function(d) { return d.City; })
       .entries(data);
       
-  x.domain(d3.extent(data, function(d) { return d.date; }));
+  x.domain(d3.extent(data, function(d) { return d.Year; }));
 
   y.domain([
-    d3.min(cities, function(c) { return d3.min(c.values, function(d) { return d.temperature; }); }),
-    d3.max(cities, function(c) { return d3.max(c.values, function(d) { return d.temperature; }); })
+    d3.min(cities, function(c) { return d3.min(c.values, function(d) { return d.Cost_of_Living_Index; }); }),
+    d3.max(cities, function(c) { return d3.max(c.values, function(d) { return d.Cost_of_Living_Index; }); })
   ]);
 
-  z.domain(cities.map(function(c) { return c.id; }));
+  z.domain(cities.map(function(c) { return c.City; }));
 
   g.append("g")
       .attr("class", "axis axis--x")
@@ -92,7 +92,7 @@ d3.tsv("TestFile.txt", type, function(error, data) {
       .attr("y", 6)
       .attr("dy", "0.71em")
       .attr("fill", "#000")
-      .text("Temperature, ºF");
+      .text("Cost of Living Index");
 
   var city = g.selectAll(".city")
     .data(cities)
@@ -102,20 +102,23 @@ d3.tsv("TestFile.txt", type, function(error, data) {
   city.append("path")
       .attr("class", "line")
       .attr("d", function(d) { return line(d.values); })
-      .style("stroke", function(d) { return z(d.id); });
+      .style("stroke", function(d) { return z(d.City); });
 
   city.append("text")
-      .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
-      .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.temperature) + ")"; })
+      .datum(function(d) { return {City: d.City, value: d.values[d.values.length - 1]}; })
+      .attr("transform", function(d) { return "translate(" + x(d.value.Year) + "," + y(d.value.Cost_of_Living_Index) + ")"; })
       .attr("x", 3)
       .attr("dy", "0.35em")
       .style("font", "10px sans-serif")
-      .text(function(d) { return d.id; });
+      .text(function(d) { return d.City; });
 });
 
 function type(d, _, columns) {
-  d.date = parseTime(d.date);
+  /*d.date = parseTime(d.date);
   for (var i = 1, n = columns.length, c; i < n; ++i) d[c = columns[i]] = +d[c];
+  */
+  d[Year] = +d[Year];
+  d[Cost_of_Living_Index] = +d[Cost_of_Living_Index];
   return d;
 }
 
