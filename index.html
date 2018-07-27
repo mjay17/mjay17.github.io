@@ -25,19 +25,6 @@
   stroke-width: 1.5px;
 }
 
-.annotation path.connector-arrow, 
-    .annotation path.connector-dot, 
-    .title text, .annotation text {
-      fill: var(--accent-color);
-    }
-
-    .annotation-note-bg {
-      fill: rgba(0, 0, 0, 0);
-    }
-
-    .annotation-note-title {
-      font-weight: bold;
-    }
 
 
 </style>
@@ -83,8 +70,8 @@ const annotations = [{
   },
   //can use x, y directly instead of data
   data: { Year: "2016", Cost_of_Living_Index: 100 },
-  dy: 137,
-  dx: 162,
+  dy: 50,
+  dx: 40,
   subject: {
     radius: 20,
     radiusPadding: 5
@@ -95,7 +82,7 @@ const makeAnnotations = d3.annotation()
   .editMode(false)
   //also can set and override in the note.padding property
   //of the annotation object
-  .notePadding(15)
+  .notePadding(10)
   .type(anot_type)
   //accessors & accessorsInverse not needed
   //if using x, y in annotations JSON
