@@ -71,7 +71,7 @@ var x = d3.scaleTime().range([0, width]),
 var line = d3.line()
     .curve(d3.curveBasis)
     .x(function(d) { return x(d.Year); })
-    .y(function(d, s) { if(s == "Groceries_Index") {return y(d.Cost_of_Living_Index); } else {return y(d.Groceries_Index);}});
+    .y(function(d, s) { return y(d.Cost_of_Living_Index); });
 
 const anot_type = d3.annotationCalloutCircle
 
