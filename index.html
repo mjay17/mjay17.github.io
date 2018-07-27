@@ -74,7 +74,7 @@ var line = d3.line()
     .x(function(d) { return x(d.Year); })
     .y(function(d) { return y(d.Cost_of_Living_Index); });
 
-const type = d3.annotationCalloutCircle
+const anot_type = d3.annotationCalloutCircle
 
 const annotations = [{
   note: {
@@ -96,7 +96,7 @@ const makeAnnotations = d3.annotation()
   //also can set and override in the note.padding property
   //of the annotation object
   .notePadding(15)
-  .type(type)
+  .type(anot_type)
   //accessors & accessorsInverse not needed
   //if using x, y in annotations JSON
   .accessors({
