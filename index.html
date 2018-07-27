@@ -8,7 +8,15 @@
 <body>
 
 <style>
+.grid line {
+  stroke: lightgrey;
+  stroke-opacity: 0.7;
+  shape-rendering: crispEdges;
+}
 
+.grid path {
+  stroke-width: 0;
+}
 
 .line {
   fill: none;
@@ -19,6 +27,17 @@
 </style>
 <svg width = "960" height = "500"></svg>
 <script>
+// gridlines in x axis function
+function make_x_gridlines() {		
+    return d3.axisBottom(x)
+        .ticks(5)
+}
+
+// gridlines in y axis function
+function make_y_gridlines() {		
+    return d3.axisLeft(y)
+        .ticks(5)
+}
 
 var svg = d3.select("svg"),
     margin = {top: 20, right: 100, bottom: 40, left: 60},
@@ -37,7 +56,7 @@ var line = d3.line()
     .curve(d3.curveBasis)
     .x(function(d) { return x(d.Year); })
     .y(function(d) { return y(d.Cost_of_Living_Index); });
-
+    
 /*
 d3.tsv("/data/Cost-of-Living-Index.csv", function(error, data) {
   if (error) throw error;
@@ -82,17 +101,17 @@ d3.tsv("TestFile.txt", type, function(error, data) {
   z.domain(cities.map(function(c) { return c.key; }));
 
   g.append("g")
-      .attr("class", "axis axis--x")
+      .attr("class", "grid")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x).tickFormat(d3.format('.4')))
+      .call(d3.axisBottom(x).ticks(5).tickSize(-height).tickFormat(d3.format('.4')))
       .append("text")             
-      .attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 30) + ")")
+      .attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 10) + ")")
       .attr("fill", "#000")
       .text("Year");
 
   g.append("g")
-      .attr("class", "axis axis--y")
-      .call(d3.axisLeft(y))
+      .attr("class", "grid")
+      .call(d3.axisLeft(y).ticks(5).tickSize(-width)..tickFormat(""))
       .append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", -45)
