@@ -37,8 +37,8 @@ var x = d3.scaleTime().range([0, width]),
 
 var line = d3.line()
     .curve(d3.curveBasis)
-    .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.temperature); });
+    .x(function(d) { return x(d.Year); })
+    .y(function(d) { return y(d.Cost_of_Living_Index); });
 
 /*
 d3.tsv("/data/Cost-of-Living-Index.csv", function(error, data) {
