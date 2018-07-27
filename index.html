@@ -86,13 +86,13 @@ const annotations = [{
   dy: 137,
   dx: 162,
   subject: {
-    radius: 50,
+    radius: 20,
     radiusPadding: 5
   }
 }]
 
 const makeAnnotations = d3.annotation()
-  .editMode(true)
+  .editMode(false)
   //also can set and override in the note.padding property
   //of the annotation object
   .notePadding(15)
