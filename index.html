@@ -100,18 +100,35 @@ d3.tsv("TestFile.txt", type, function(error, data) {
 
   z.domain(cities.map(function(c) { return c.key; }));
 
-  g.append("g")
+  // add the X gridlines
+  g.append("g")			
       .attr("class", "grid")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x).ticks(5).tickSize(-height).tickFormat(d3.format('.4')))
+      .call(make_x_gridlines()
+          .tickSize(-height)
+          .tickFormat("")
+      )
+
+  // add the Y gridlines
+  g.append("g")			
+      .attr("class", "grid")
+      .call(make_y_gridlines()
+          .tickSize(-width)
+          .tickFormat("")
+      )
+      
+  g.append("g")
+      .attr("class", "axis axis--x")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x).tickFormat(d3.format('.4')))
       .append("text")             
       .attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 10) + ")")
       .attr("fill", "#000")
       .text("Year");
 
   g.append("g")
-      .attr("class", "grid")
-      .call(d3.axisLeft(y).ticks(5).tickSize(-width).tickFormat(""))
+      .attr("class", "axis axis--y")
+      .call(d3.axisLeft(y))
       .append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", -45)
