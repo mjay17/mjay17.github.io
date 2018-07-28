@@ -521,7 +521,7 @@
 					<div class="left-div">
 						<br><br><br><br><br><br>
 						<p><font size="6" face="verdana">Population Density</font></p>
-						<font size="4" face="verdana">It is a measurement of population per unit area.</font><br>
+						<font size="4" face="verdana">It is a measurement of population per unit area (in square miles).</font><br>
 					</div>    
 					<div class="right-div">
 						<svg id = "svg4" width = "960" height = "500"></svg>
@@ -647,7 +647,7 @@
 								  .call(d3.axisLeft(y))
 								  .append("text")
 								  .attr("transform", "rotate(-90)")
-								  .attr("y", -45)
+								  .attr("y", -55)
 								  .attr("dy", "0.71em")
 								  .attr("fill", "#000")
 								  .style("font", "15px sans-serif")
@@ -717,7 +717,8 @@
 							}
 						
 					</script>
-				</div> 
+					</div> 
+				</div>	
 			</div>
 		</div>
 		<div class="section" id="section-3">
@@ -941,7 +942,7 @@
 									  .attr("y", -45)
 									  .attr("dy", "0.71em")
 									  .attr("fill", "#000")
-									  .style("font", "10px sans-serif")
+									  .style("font", "15px sans-serif")
 									  .text(y_text);
 
 								// add legend   
