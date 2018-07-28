@@ -242,9 +242,8 @@
 							  .attr("class", "legend")
 							  .attr("height", 100)
 							  .attr("width", 100)
-							  .attr('transform', 'translate(-20,50)')    
+							  .attr('transform', 'translate(-20,50)');    
 	  
-	
 							legend.selectAll('rect')
 							  .data(cities)
 							  .enter()
@@ -255,7 +254,7 @@
 							  .attr("height", 10)
 							  .style("fill", function(d) { 
 								return z(d.key);
-							  })
+							  });
 	  
 							legend.selectAll('text')
 							  .data(cities)
@@ -282,8 +281,8 @@
 								  .attr("transform", function(d) { return "translate(" + x(d.value.Year) + "," + y(d.value.Cost_of_Living_Index) + ")"; })
 								  .attr("x", 3)
 								  .attr("dy", "0.35em")
-								  .style("font", "10px sans-serif")
-								  .text(function(d) { return d.City; });
+								  .style("font", "10px sans-serif");
+								  //.text(function(d) { return d.City; });
 								
 							/*d3.select('#index')
 								.on("change", function () {
