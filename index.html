@@ -35,7 +35,7 @@
 		.left-bottom {
 			position: absolute;
 			top: 80%;
-			left: 110px;
+			left: 225px;
 			color: black;
 			text-align: left;
 			background-color: #ededed;
@@ -47,7 +47,7 @@
 			left: 10px;
 			bottom: 10px;
 			text-align: left;
-			font: bold 14px Arial;
+			font: bold 14px verdana;
 			text-decoration: none;
 			background-color: lightgrey;
 			color: #333333;
@@ -59,7 +59,7 @@
 			width: 20%;
 			overflow: hidden;
 			color: black;
-			text-align: left;
+			text-align: justify;
 			margin-left: 75px;
 			vertical-align: middle;
 			margin-top: 50px;
@@ -90,11 +90,11 @@
 		<div class="section" id="section-1">
 			<div>
 				<div style="display: flex; justify-content: center;">
-					<img src="./img/Indecisiveness.jpg" alt="US Metropolitan areas">
+					<img src="./img/Indecisiveness.jpg" alt="Where to relocate in US?">
 				</div>
 				<p class="left-bottom">
-					<font size="6">Where to relocate in USA?</font><br>
-					<font size="4">Where next? Evaluate large US metropolitan areas to relocate.</font><br><br><br><br>
+					<font size="6" face="verdana">Where to relocate in U.S.?</font><br>
+					<font size="4" face="verdana">Evaluate and find best 5 U.S. metropolitan cities to relocate.</font><br><br><br><br>
 					<a class="about-this" href="#glossaryPage">About this Visualization</a>
 				</p>
 			</div>
@@ -104,8 +104,8 @@
 				<div>
 					<div class="left-div">
 						<br><br><br><br><br><br>
-						<p><font size="6">Cost of Living Indexes</font></p>
-						<font size="4">First let's see how is the cost of living in the selected large US metropolitan areas.<br><br></font>
+						<p><font size="6" face="verdana">Cost of Living Index</font></p>
+						<font size="4" face="verdana">It is a relative indicator of consumer goods prices, including groceries, restaurants, transportation and utilities. It doesn't include accommodation expenses such as rent or mortgage.<br><br></font>
 					</div>    
 					<div class="right-div">
 						<svg id = "svg1" width = "960" height = "500"></svg>
@@ -116,7 +116,7 @@
 								width = svg.attr("width") - margin.left - margin.right,
 								height = svg.attr("height") - margin.top - margin.bottom,
 							g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-							g.append('text').html('Cost of Living Index for large US metropolitan areas').attr('x', 275);
+							g.append('text').html('Cost of Living Index for big U.S. metropolitan cities').attr('x', 275);
 
 							var x = d3.scaleTime().range([0, width]),
 								y = d3.scaleLinear().range([height, 0]),
@@ -233,7 +233,6 @@
 								  .append("text")
 								  .attr("transform", "rotate(-90)")
 								  .attr("y", -45)
-								  .attr("dy", "0.71em")
 								  .attr("fill", "#000")
 								  .text("Cost of Living Index");
 							
@@ -248,7 +247,7 @@
 							  .data(cities)
 							  .enter()
 							  .append("rect")
-							  .attr("x", width + 25)
+							  .attr("x", width + 22)
 							  .attr("y", function(d, i){ return i *  18;})
 							  .attr("width", 10)
 							  .attr("height", 10)
@@ -260,7 +259,7 @@
 							  .data(cities)
 							  .enter()
 							  .append("text")
-							  .attr("x", width + 38)
+							  .attr("x", width + 35)
 							  .attr("y", function(d, i){ return i *  18 + 9;})
 							  .text(function(d) {
 								return d.key;
@@ -283,15 +282,6 @@
 								  .attr("dy", "0.35em")
 								  .style("font", "10px sans-serif");
 								  //.text(function(d) { return d.City; });
-								
-							/*d3.select('#index')
-								.on("change", function () {
-								var sect = document.getElementById("index");
-								var section = sect.options[sect.selectedIndex].value;
-								
-								make_plot(plot_data, section);
-							});*/
-							
 							});	
 		
 							function type(d, _, columns) {
@@ -775,7 +765,7 @@
 		var fullPage = new fullpage('#fullpage', {
 			//options here
 			anchors:['homePage', 'secondPage', 'thirdPage', 'glossaryPage'],
-			sectionsColor : ['#ccc', '#fff', '#ccc', '#fff'],
+			sectionsColor : ['#ccc', '#eaf0fc', '#ccc', '#fff'],
 			autoScrolling:true,
 			scrollHorizontally: true,
 			navigationTooltips: ['homePage', 'secondPage', 'thirdPage', 'glossaryPage'],
