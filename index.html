@@ -319,7 +319,7 @@
 								mousePerLine.append("circle")
 								  .attr("r", 7)
 								  .style("stroke", function(d) {
-									return color(d.name);
+									return color(d.key);
 								  })
 								  .style("fill", "none")
 								  .style("stroke-width", "1px")
@@ -362,7 +362,7 @@
 								  .attr("transform", function(d, i) {
 									console.log(width/mouse[0])
 									var xDate = x.invert(mouse[0]),
-										bisect = d3.bisector(function(d) { return d.date; }).right;
+										bisect = d3.bisector(function(d) { return d.values.Year; }).right;
 										idx = bisect(d.values, xDate);
 			
 									var beginning = 0,
@@ -552,7 +552,7 @@
 							  .attr('transform', 'translate(-20,50)');    
 	  
 							legend2.selectAll('rect')
-							  .data(cities)
+							  .data(cities2)
 							  .enter()
 							  .append("rect")
 							  .attr("x", width + 23)
@@ -564,7 +564,7 @@
 							  });
 	  
 							legend2.selectAll('text')
-							  .data(cities)
+							  .data(cities2)
 							  .enter()
 							  .append("text")
 							  .attr("x", width + 36)
@@ -838,7 +838,7 @@
 								  .attr('transform', 'translate(-20,50)');    
 	  
 								legend3.selectAll('rect')
-								  .data(cities)
+								  .data(cities3)
 								  .enter()
 								  .append("rect")
 								  .attr("x", width + 23)
@@ -850,7 +850,7 @@
 								  });
 	  
 								legend3.selectAll('text')
-								  .data(cities)
+								  .data(cities3)
 								  .enter()
 								  .append("text")
 								  .attr("x", width + 36)
