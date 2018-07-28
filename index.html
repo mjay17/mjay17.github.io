@@ -25,12 +25,6 @@
 		  stroke: steelblue;
 		  stroke-width: 1.5px;
 		}
-
-		#index{
-			position:absolute;
-			top:100px;
-			right:75px;
-		}
 		
 		.left-bottom {
 			position: absolute;
@@ -334,7 +328,7 @@
 								width = svg2.attr("width") - margin.left - margin.right,
 								height = svg2.attr("height") - margin.top - margin.bottom,
 							g2 = svg2.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-							g2.append('text').style("font", "20px sans-serif").text('Unemployment Rate for big U.S. metropolitan cities').attr('x', 250);
+							g2.append('text').style("font", "20px sans-serif").text('Unemployment Rate for big U.S. metropolitan cities').attr('x', 200);
 
 							var x = d3.scaleTime().range([0, width]),
 								y = d3.scaleLinear().range([height, 0]),
@@ -534,15 +528,20 @@
 						<font size="4" face="verdana">Rent Index is an estimation of prices of renting apartments in the city compared to NYC.</font>
 					</div>    
 					<div class="right-div">
-						<select id = "index">
-							<option value="" selected disabled hidden>Choose Index Here</option>
-							<option value="Groceries_Index">Groceries Index</option>
-							<option value="Rent_Index">Rent Index</option>
-							<option value="Restaurant_Price_Index">Restaurant Price Index</option>
-							<option value="Local_Purchasing_Power_Index">Local Purchasing Power Index</option>
-							<option value="Cost_of_Living_Plus_Rent_Index">Cost of Living Plus Rent Index</option>
-						</select>
-						<svg id = "svg3" width = "960" height = "500"></svg>
+						<span style="vertical-align:top;">
+							<b><font size=4 face="verdana">Choose Index</font></b>
+							<select id = "index">
+								<option value="" selected disabled hidden>Choose Index Here</option>
+								<option value="Groceries_Index">Groceries Index</option>
+								<option value="Rent_Index">Rent Index</option>
+								<option value="Restaurant_Price_Index">Restaurant Price Index</option>
+								<option value="Local_Purchasing_Power_Index">Local Purchasing Power Index</option>
+								<option value="Cost_of_Living_Plus_Rent_Index">Cost of Living Plus Rent Index</option>
+							</select>
+						</span>	
+						<div style="margin-top: 20px">
+							<svg id = "svg3" width = "960" height = "500"></svg>
+						</div>
 						<script type="text/javascript">
 	
 							d3.select('#index')
@@ -558,7 +557,7 @@
 									width = svg3.attr("width") - margin.left - margin.right,
 									height = svg3.attr("height") - margin.top - margin.bottom,
 								g3 = svg3.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-								g3.append('text').style("font", "20px sans-serif").text('Various Cost of Living Indexes for big U.S. metropolitan cities').attr('x', 250);
+								g3.append('text').style("font", "20px sans-serif").text('Various Cost of Living Indexes for big U.S. metropolitan cities').attr('x', 175);
 
 								var x = d3.scaleTime().range([0, width]),
 									y = d3.scaleLinear().range([height, 0]),
