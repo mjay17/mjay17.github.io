@@ -122,7 +122,6 @@
 					</div>    
 					<div class="right-div">
 						<svg id = "svg1" width = "960" height = "500"></svg>
-						<div id='tooltip' style='position:absolute;background-color:lightgray;padding:5px'></div>
 						<script type="text/javascript">
 	
 							var svg = d3.select("#svg1"),
@@ -131,9 +130,6 @@
 								height = svg.attr("height") - margin.top - margin.bottom,
 							g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 							g.append('text').style("font", "20px sans-serif").text('Cost of Living Index for big U.S. metropolitan cities').attr('x', 220);
-							
-							const tooltip = d3.select('#tooltip');
-							const tooltipLine = g.append('line');
 
 							var x = d3.scaleTime().range([0, width]),
 								y = d3.scaleLinear().range([height, 0]),
@@ -303,43 +299,95 @@
 								  .style("font", "10px sans-serif");
 								  //.text(function(d) { return d.City; });
 								  
-							var tipBox = g.append('rect')
-									.attr('width', width)
-									.attr('height', height)
-									.attr('opacity', 0)
-									.on('mousemove', drawTooltip)
-									.on('mouseout', removeTooltip);
-								
-							function removeTooltip() {
-									if (tooltip) tooltip.style('display', 'none');
-									if (tooltipLine) tooltipLine.attr('stroke', 'none');
-								}
+							var mouseG = svg.append("g")
+						  		.attr("class", "mouse-over-effects");
 
-							function drawTooltip() {
-								  const year = Math.floor((x.invert(d3.mouse(tipBox.node())[0]) + 5) / 10) * 10;
+							mouseG.append("path") // this is the black vertical line to follow mouse
+							  .attr("class", "mouse-line")
+							  .style("stroke", "black")
+							  .style("stroke-width", "1px")
+							  .style("opacity", "0");
+  
+							var lines = document.getElementsByClassName('line');
 
-								  cities.sort((a, b) => {
-									return b.values.find(h => h.Year == year).Cost_of_Living_Index - a.values.find(h => h.Year == year).Cost_of_Living_Index;
-								})  
+							var mousePerLine = mouseG.selectAll('.mouse-per-line')
+							  .data(cities)
+							  .enter()
+							  .append("g")
+							  .attr("class", "mouse-per-line");
 
-							tooltipLine.attr('stroke', 'black')
-									.attr('x1', x(year))
-									.attr('x2', x(year))
-									.attr('y1', 0)
-									.attr('y2', height);
+								mousePerLine.append("circle")
+								  .attr("r", 7)
+								  .style("stroke", function(d) {
+									return color(d.name);
+								  })
+								  .style("fill", "none")
+								  .style("stroke-width", "1px")
+								  .style("opacity", "0");
 
-							tooltip.html(year)
-									.style('display', 'block')
-									.style('left', d3.event.pageX + 20)
-									.style('top', d3.event.pageY - 20)
-									.selectAll()
-									.data(cities).enter()
-									.append('div')
-									.style('color', d => d.color)
-									.html(d => d.key + ': ' + d.values.find(h => h.Year == year).Cost_of_Living_Index);
-								}
+							mousePerLine.append("text")
+							  .attr("transform", "translate(10,3)");
+
+							mouseG.append('svg:rect') // append a rect to catch mouse movements on canvas
+							  .attr('width', width) // can't catch mouse events on a g element
+							  .attr('height', height)
+							  .attr('fill', 'none')
+							  .attr('pointer-events', 'all')
+							  .on('mouseout', function() { // on mouse out hide line, circles and text
+								d3.select(".mouse-line")
+								  .style("opacity", "0");
+								d3.selectAll(".mouse-per-line circle")
+								  .style("opacity", "0");
+								d3.selectAll(".mouse-per-line text")
+								  .style("opacity", "0");
+							  })
+							  .on('mouseover', function() { // on mouse in show line, circles and text
+								d3.select(".mouse-line")
+								  .style("opacity", "1");
+								d3.selectAll(".mouse-per-line circle")
+								  .style("opacity", "1");
+								d3.selectAll(".mouse-per-line text")
+								  .style("opacity", "1");
+							  })
+							  .on('mousemove', function() { // mouse moving over canvas
+								var mouse = d3.mouse(this);
+								d3.select(".mouse-line")
+								  .attr("d", function() {
+									var d = "M" + mouse[0] + "," + height;
+									d += " " + mouse[0] + "," + 0;
+									return d;
+								  });
+
+								d3.selectAll(".mouse-per-line")
+								  .attr("transform", function(d, i) {
+									console.log(width/mouse[0])
+									var xDate = x.invert(mouse[0]),
+										bisect = d3.bisector(function(d) { return d.date; }).right;
+										idx = bisect(d.values, xDate);
+			
+									var beginning = 0,
+										end = lines[i].getTotalLength(),
+										target = null;
+
+									while (true){
+									  target = Math.floor((beginning + end) / 2);
+									  pos = lines[i].getPointAtLength(target);
+									  if ((target === end || target === beginning) && pos.x !== mouse[0]) {
+										  break;
+									  }
+									  if (pos.x > mouse[0])      end = target;
+									  else if (pos.x < mouse[0]) beginning = target;
+									  else break; //position found
+									}
+			
+									d3.select(this).select('text')
+									  .text(y.invert(pos.y).toFixed(2));
+			  
+									return "translate(" + mouse[0] + "," + pos.y +")";
+								  });
 								  
-							});	
+								});	
+							});
 							
 							function type(d, _, columns) {
 							  d.Year = +d.Year;
@@ -371,8 +419,8 @@
 	
 							var svg2 = d3.select("#svg2"),
 								margin = {top: 20, right: 120, bottom: 40, left: 60},
-								width = svg.attr("width") - margin.left - margin.right,
-								height = svg.attr("height") - margin.top - margin.bottom,
+								width = svg2.attr("width") - margin.left - margin.right,
+								height = svg2.attr("height") - margin.top - margin.bottom,
 							g2 = svg2.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 							g2.append('text').style("font", "20px sans-serif").text('Unemployment Rate for big U.S. metropolitan cities').attr('x', 250);
 
@@ -504,7 +552,7 @@
 							  .attr('transform', 'translate(-20,50)');    
 	  
 							legend2.selectAll('rect')
-							  .data(cities2)
+							  .data(cities)
 							  .enter()
 							  .append("rect")
 							  .attr("x", width + 23)
@@ -516,7 +564,7 @@
 							  });
 	  
 							legend2.selectAll('text')
-							  .data(cities2)
+							  .data(cities)
 							  .enter()
 							  .append("text")
 							  .attr("x", width + 36)
@@ -595,8 +643,8 @@
 								svg3.selectAll("*").remove();
 								
 								var	margin = {top: 20, right: 120, bottom: 40, left: 60},
-									width = svg.attr("width") - margin.left - margin.right,
-									height = svg.attr("height") - margin.top - margin.bottom,
+									width = svg3.attr("width") - margin.left - margin.right,
+									height = svg3.attr("height") - margin.top - margin.bottom,
 								g3 = svg3.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 								g3.append('text').style("font", "20px sans-serif").text('Various Cost of Living Indexes for big U.S. metropolitan cities').attr('x', 250);
 
