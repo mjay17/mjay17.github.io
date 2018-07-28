@@ -248,7 +248,7 @@
 							  .data(cities)
 							  .enter()
 							  .append("rect")
-							  .attr("x", width + 27)
+							  .attr("x", width + 25)
 							  .attr("y", function(d, i){ return i *  20;})
 							  .attr("width", 10)
 							  .attr("height", 10)
@@ -260,7 +260,7 @@
 							  .data(cities)
 							  .enter()
 							  .append("text")
-							  .attr("x", width + 40)
+							  .attr("x", width + 38)
 							  .attr("y", function(d, i){ return i *  20 + 9;})
 							  .text(function(d) {
 								return d.key;
