@@ -290,8 +290,8 @@
 								margin = {top: 20, right: 100, bottom: 40, left: 60},
 								width = svg.attr("width") - margin.left - margin.right,
 								height = svg.attr("height") - margin.top - margin.bottom,
-							g = svg2.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-							g.append('text').html('Unemployment Rate for large US metropolitan areas').attr('x', 275);
+							g2 = svg2.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+							g2.append('text').html('Unemployment Rate for large US metropolitan areas').attr('x', 275);
 
 							var x = d3.scaleTime().range([0, width]),
 								y = d3.scaleLinear().range([height, 0]),
@@ -311,7 +311,7 @@
 									.ticks(5)
 							}
 							
-							var line = d3.line()
+							var line2 = d3.line()
 								.curve(d3.curveBasis)
 								.x(function(d) { return x(d.Year); })
 								.y(function(d, s) { return y(d.Unemployment_Rate); });
@@ -319,8 +319,8 @@
 			
 							const annotations2 = [{
 							  note: {
-								label: "Longer text to show text wrapping",
-								title: "Annotations :)"
+								label: "Longer text",
+								title: "Annotations"
 							  },
 							  //can use x, y directly instead of data
 							  data: { Year: 2015, Unemployment_Rate: 5.7 },
@@ -353,28 +353,28 @@
 							d3.tsv("/data/DS-Data.txt", type, function(error, data) {
 								if (error) throw error;
 
-								var cities = d3.nest()
+								var cities2 = d3.nest()
 									.key(function(d) { return d.City; })
 									.entries(data);
 								
 							x.domain([
-								d3.min(cities, function(c) { return d3.min(c.values, function(d) { return d.Year; }); }),
-								d3.max(cities, function(c) { return d3.max(c.values, function(d) { return d.Year; }); })
+								d3.min(cities2, function(c) { return d3.min(c.values, function(d) { return d.Year; }); }),
+								d3.max(cities2, function(c) { return d3.max(c.values, function(d) { return d.Year; }); })
 							  ]);
 
 							y.domain([
-								d3.min(cities, function(c) { return d3.min(c.values, function(d) { return d.Unemployment_Rate; }); }),
-								d3.max(cities, function(c) { return d3.max(c.values, function(d) { return d.Unemployment_Rate; }); })
+								d3.min(cities2, function(c) { return d3.min(c.values, function(d) { return d.Unemployment_Rate; }); }),
+								d3.max(cities2, function(c) { return d3.max(c.values, function(d) { return d.Unemployment_Rate; }); })
 							  ]);
 
-							z.domain(cities.map(function(c) { return c.key; }));
+							z.domain(cities2.map(function(c) { return c.key; }));
 
-							g.append("g")
+							g2.append("g")
 							  .attr("class", "annotation-group")
 							  .call(make_annotations2)
 
 							// add the X gridlines
-							g.append("g")			
+							g2.append("g")			
 								  .attr("class", "grid")
 								  .attr("transform", "translate(0," + height + ")")
 								  .call(make_x_gridlines()
@@ -383,25 +383,25 @@
 								  )
 
 							// add the Y gridlines
-							g.append("g")			
+							g2.append("g")			
 								  .attr("class", "grid")
 								  .call(make_y_gridlines()
 									  .tickSize(-width)
 									  .tickFormat("")
 								  )
 
-							g.append("g")
+							g2.append("g")
 								  .append("text") 
 								  .attr("transform", "translate(" + (width / 2) + " ," +	(height + margin.top + 20) + ")")
 								  .style("text-anchor", "middle")
 								  .text("Year"); 
 
-							g.append("g")
+							g2.append("g")
 								  .attr("class", "axis axis--x")
 								  .attr("transform", "translate(0," + height + ")")
 								  .call(d3.axisBottom(x).tickFormat(d3.format('.4'))); 
 
-							g.append("g")
+							g2.append("g")
 								  .attr("class", "axis axis--y")
 								  .call(d3.axisLeft(y))
 								  .append("text")
@@ -411,17 +411,17 @@
 								  .attr("fill", "#000")
 								  .text("Unemployment Rate");
 
-							var city = g.selectAll(".city")
-								.data(cities)
+							var city2 = g2.selectAll(".city")
+								.data(cities2)
 								.enter().append("g")
-								  .attr("class", "city");
+								.attr("class", "city");
 
-							city.append("path")
+							city2.append("path")
 								  .attr("class", "line")
 								  .attr("d", function(d) { return line(d.values); })
 								  .style("stroke", function(d) { return z(d.key); });
 
-							city.append("text")
+							city2.append("text")
 								  .datum(function(d) { return {City: d.key, value: d.values[d.values.length - 1]}; })
 								  .attr("transform", function(d) { return "translate(" + x(d.value.Year) + "," + y(d.value.Unemployment_Rate) + ")"; })
 								  .attr("x", 3)
