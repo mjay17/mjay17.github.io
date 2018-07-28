@@ -319,7 +319,7 @@
 								  const year = Math.floor((x.invert(d3.mouse(tipBox.node())[0]) + 5) / 10) * 10;
 
 								  cities.sort((a, b) => {
-									return b.values.find(h => h.year == year).Cost_of_Living_Index - a.values.find(h => h.year == year).Cost_of_Living_Index;
+									return b.values.find(h => h.Year == year).Cost_of_Living_Index - a.values.find(h => h.Year == year).Cost_of_Living_Index;
 								})  
 
 							tooltipLine.attr('stroke', 'black')
@@ -336,7 +336,7 @@
 									.data(cities).enter()
 									.append('div')
 									.style('color', d => d.color)
-									.html(d => d.key + ': ' + d.values.find(h => h.year == year).Cost_of_Living_Index);
+									.html(d => d.key + ': ' + d.values.find(h => h.Year == year).Cost_of_Living_Index);
 								}
 								  
 							});	
