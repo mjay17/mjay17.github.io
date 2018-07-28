@@ -756,7 +756,7 @@
 								var svg3 = d3.select("#svg3");
 								svg3.selectAll("*").remove();
 								
-								var	margin = {top: 20, right: 120, bottom: 40, left: 60},
+								var	margin = {top: 20, right: 120, bottom: 40, left: 80},
 									width = svg3.attr("width") - margin.left - margin.right,
 									height = svg3.attr("height") - margin.top - margin.bottom,
 								g3 = svg3.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -941,7 +941,7 @@
 									  .attr("y", -45)
 									  .attr("dy", "0.71em")
 									  .attr("fill", "#000")
-									  .style("font", "15px sans-serif")
+									  .style("font", "10px sans-serif")
 									  .text(y_text);
 
 								// add legend   
