@@ -528,7 +528,7 @@
 						<script type="text/javascript">
 
 							var svg4 = d3.select("#svg4"),
-								margin = {top: 20, right: 120, bottom: 40, left: 60},
+								margin = {top: 20, right: 120, bottom: 40, left: 80},
 								width = svg4.attr("width") - margin.left - margin.right,
 								height = svg4.attr("height") - margin.top - margin.bottom,
 							g4 = svg4.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -590,7 +590,7 @@
 							  })
 							  .annotations(annotations4)
 	
-							d3.tsv("/data/DS-Data.txt", type, function(error, data) {
+							d3.tsv("/data/DS-Data.txt", type4, function(error, data) {
 								if (error) throw error;
 
 								var cities4 = d3.nest()
@@ -702,7 +702,7 @@
 							  
 							});
 						
-							function type(d, _, columns) {
+							function type4(d, _, columns) {
 							  d.Year = +d.Year;
 							  d.Cost_of_Living_Index = +d.Cost_of_Living_Index;
 							  d.Cost_of_Living_Plus_Rent_Index = +d.Cost_of_Living_Plus_Rent_Index;
