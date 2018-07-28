@@ -123,7 +123,7 @@
 								width = svg.attr("width") - margin.left - margin.right,
 								height = svg.attr("height") - margin.top - margin.bottom,
 							g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-							g.append('text').style("font", "20px sans-serif").text('Cost of Living Index for big U.S. metropolitan cities').attr('x', 220);
+							g.append('text').style("font", "20px sans-serif").text('Cost of Living Index for big U.S. metropolitan cities').attr('x', 200);
 
 							var x = d3.scaleTime().range([0, width]),
 								y = d3.scaleLinear().range([height, 0]),
@@ -520,7 +520,7 @@
 		<div class="section" id="section-3">
 			<div>
 					<div class="left-div">
-						<br><br><br>
+						<br>
 						<p><font size="6" face="verdana">Breakdown of Cost of Living Indexes</font></p>
 						<font size="4" face="verdana">These indexes are relative to New York City (NYC). Which means that for New York City, each index should be 100(%). If another city has, for example, rent index of 120, it means that on an average in that city rents are 20% more expensive than in New York City. If a city has rent index of 70, that means on an average in that city rents are 30% less expensive than in New York City.</font><br><br>
 						<font size="4" face="verdana">Groceries Index is an estimation of grocery prices in the city compared to NYC.</font><br><br>
@@ -553,11 +553,11 @@
 								var svg3 = d3.select("#svg3");
 								svg3.selectAll("*").remove();
 								
-								var	margin = {top: 20, right: 120, bottom: 40, left: 60},
+								var	margin = {top: 30, right: 120, bottom: 40, left: 60},
 									width = svg3.attr("width") - margin.left - margin.right,
 									height = svg3.attr("height") - margin.top - margin.bottom,
 								g3 = svg3.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-								g3.append('text').style("font", "20px sans-serif").text('Various Cost of Living Indexes for big U.S. metropolitan cities').attr('x', 175);
+								g3.append('text').style("font", "20px sans-serif").text('Various Cost of Living Indexes for big U.S. metropolitan cities').attr('x', 150);
 
 								var x = d3.scaleTime().range([0, width]),
 									y = d3.scaleLinear().range([height, 0]),
