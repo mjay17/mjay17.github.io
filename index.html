@@ -94,17 +94,6 @@
 			background: yellow;
 			box-shadow: 2px 2px 1px #888;
 		}
-		
-		.tooltip {
-			position: absolute;
-			z-index: 10;
-		}
-
-		.tooltip p {
-			background-color: white;
-			border: gray 1px solid;
-			padding: 2px;
-		}
 
 	</style>
 </head>
@@ -133,6 +122,7 @@
 					</div>    
 					<div class="right-div">
 						<svg id = "svg1" width = "960" height = "500"></svg>
+						<div id='tooltip' style='position:absolute;background-color:lightgray;padding:5px'></div>
 						<script type="text/javascript">
 	
 							var svg = d3.select("#svg1"),
@@ -141,12 +131,10 @@
 								height = svg.attr("height") - margin.top - margin.bottom,
 							g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 							g.append('text').style("font", "20px sans-serif").text('Cost of Living Index for big U.S. metropolitan cities').attr('x', 220);
+							
+							const tooltip = d3.select('#tooltip');
+							const tooltipLine = g.append('line');
 
-							// add a tooltip to the page - not to the svg itself!
-							var tooltip = d3.select("body")
-      							.append("div")
-      							.attr("class", "tooltip");
-      	
 							var x = d3.scaleTime().range([0, width]),
 								y = d3.scaleLinear().range([height, 0]),
 								z = d3.scaleOrdinal(d3.schemeCategory20);
@@ -315,22 +303,44 @@
 								  .style("font", "10px sans-serif");
 								  //.text(function(d) { return d.City; });
 								  
-							city.attr("cx", function(d) {
-								return x(d.value.Year);
-							})
-							.attr("cy", function(d) {
-								return y(d.value.Cost_of_Living_Index);
-							})
-							.attr("r", 4);
+							tipBox = city.append('rect')
+									.attr('width', width)
+									.attr('height', height)
+									.attr('opacity', 0)
+									.on('mousemove', drawTooltip)
+									.on('mouseout', removeTooltip);
+								
+							function removeTooltip() {
+									if (tooltip) tooltip.style('display', 'none');
+									if (tooltipLine) tooltipLine.attr('stroke', 'none');
+								}
 
-							// Adding all the mouse events for the tooltips!
+							function drawTooltip() {
+								  const year = Math.floor((x.invert(d3.mouse(tipBox.node())[0]) + 5) / 10) * 10;
 
-							city
-							.on("mouseover", mouseoverFunc) // see below...
-      						.on("mousemove", mousemoveFunc) // see below...
-      						.on("mouseout", mouseoutFunc); // see below...
+								  states.sort((a, b) => {
+									return b.values.find(h => h.year == year).Cost_of_Living_Index - a.values.find(h => h.year == year).Cost_of_Living_Index;
+								})  
+
+							tooltipLine.attr('stroke', 'black')
+									.attr('x1', x(year))
+									.attr('x2', x(year))
+									.attr('y1', 0)
+									.attr('y2', height);
+
+							tooltip.html(year)
+									.style('display', 'block')
+									.style('left', d3.event.pageX + 20)
+									.style('top', d3.event.pageY - 20)
+									.selectAll()
+									.data(cities).enter()
+									.append('div')
+									.style('color', d => d.color)
+									.html(d => d.key + ': ' + d.values.find(h => h.year == year).Cost_of_Living_Index);
+								}
+								  
 							});	
-		
+							
 							function type(d, _, columns) {
 							  d.Year = +d.Year;
 							  d.Cost_of_Living_Index = +d.Cost_of_Living_Index;
@@ -342,24 +352,6 @@
 							  d.Unemployment_Rate = +d.Unemployment_Rate;
 		  
 							  return d;
-							}
-							
-							function mouseoverFunc(d) {
-								return tooltip
-									.style("display", null) // this removes the display none setting from it
-									.html("<p>Year: " + d.year +
-											  "<br>CoLI: " + d.Cost_of_Living_Index + " kt</p>");
-							}
-
-							function mousemoveFunc(d) {
-								console.log("events", window.event, d3.event);
-								return tooltip
-									.style("top", (d3.event.pageY - 10) + "px" )
-									.style("left", (d3.event.pageX + 10) + "px");
-							}
-
-							function mouseoutFunc(d) {
-								return tooltip.style("display", "none");  // this sets it to invisible!
 							}
 							
 						</script>
