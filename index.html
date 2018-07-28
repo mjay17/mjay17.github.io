@@ -466,13 +466,263 @@
 					</div>    
 					<div class="right-div">
 						<select id = "index">
-							<option value="Groceries_Index" selected="selected">Groceries Index</option>
+							<option value="" selected disabled hidden>Choose Index Here</option>
+							<option value="Groceries_Index">Groceries Index</option>
 							<option value="Rent_Index">Rent Index</option>
 							<option value="Restaurant_Price_Index">Restaurant Price Index</option>
 							<option value="Local_Purchasing_Power_Index">Local Purchasing Power Index</option>
 							<option value="Cost_of_Living_Plus_Rent_Index">Cost of Living Plus Rent Index</option>
 						</select>
 						<svg id = "svg3" width = "960" height = "500"></svg>
+						<script type="text/javascript">
+	
+							d3.select('#index')
+								.on("change", function () {
+								var sect = document.getElementById("index");
+								var section = sect.options[sect.selectedIndex].value;
+								
+								
+								var svg3 = d3.select("#svg3"),
+									margin = {top: 20, right: 100, bottom: 40, left: 60},
+									width = svg.attr("width") - margin.left - margin.right,
+									height = svg.attr("height") - margin.top - margin.bottom,
+								g3 = svg3.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+								g3.append('text').html('Various Cost of Living Indexes for large US metropolitan areas').attr('x', 275);
+
+								var x = d3.scaleTime().range([0, width]),
+									y = d3.scaleLinear().range([height, 0]),
+									z = d3.scaleOrdinal(d3.schemeCategory20);
+							
+								var parseTime = d3.timeParse("%Y%m%d");
+							
+								// gridlines in x axis function
+								function make_x_gridlines() {		
+									return d3.axisBottom(x)
+										.ticks(5)
+								}
+
+								// gridlines in y axis function
+								function make_y_gridlines() {		
+									return d3.axisLeft(y)
+										.ticks(5)
+								}
+							
+								var line3 = d3.line()
+									.curve(d3.curveBasis)
+									.x(function(d) { return x(d.Year); })
+									.y(function(d, s) { 
+										if(section == "Groceries_Index") {
+											return y(d.Groceries_Index); 
+										}
+										else if(section == "Rent_Index") {
+											return y(d.Rent_Index); 
+										}
+										else if(section == "Restaurant_Price_Index") {
+											return y(d.Restaurant_Price_Index); 
+										}
+										else if(section == "Local_Purchasing_Power_Index") {
+											return y(d.Local_Purchasing_Power_Index); 
+										}
+										else if(section == "Cost_of_Living_Plus_Rent_Index") {
+											return y(d.Cost_of_Living_Plus_Rent_Index); 
+										}
+									});
+							
+								/*
+								const annotations2 = [{
+								  note: {
+									label: "Longer text",
+									title: "Annotations"
+								  },
+								  //can use x, y directly instead of data
+								  data: { Year: 2015, Unemployment_Rate: 5.7 },
+								  dy: 50,
+								  dx: 40,
+								  subject: {
+									radius: 20,
+									radiusPadding: 5
+								  }
+								}]
+			
+								const make_annotations2 = d3.annotation()
+								  .editMode(false)
+								  //also can set and override in the note.padding property
+								  //of the annotation object
+								  .notePadding(10)
+								  .type(anot_type)
+								  //accessors & accessorsInverse not needed
+								  //if using x, y in annotations JSON
+								  .accessors({
+									x: d => x(d.Year),
+									y: d => y(d.Unemployment_Rate)
+								  })
+								  .accessorsInverse({
+									 Year: d => x.invert(d.x),
+									 Unemployment_Rate: d => y.invert(d.y)
+								  })
+								  .annotations(annotations2)
+								  */
+		
+								d3.tsv("/data/DS-Data.txt", type, function(error, data) {
+									if (error) throw error;
+
+									var cities3 = d3.nest()
+										.key(function(d) { return d.City; })
+										.entries(data);
+								
+								x.domain([
+									d3.min(cities3, function(c) { return d3.min(c.values, function(d) { return d.Year; }); }),
+									d3.max(cities3, function(c) { return d3.max(c.values, function(d) { return d.Year; }); })
+								  ]);
+								
+								if(section == "Groceries_Index") {
+									y.domain([
+									d3.min(cities3, function(c) { return d3.min(c.values, function(d) { return d.Groceries_Index; }); }),
+									d3.max(cities3, function(c) { return d3.max(c.values, function(d) { return d.Groceries_Index; }); })
+								  ]); 
+								}
+								else if(section == "Rent_Index") {
+									y.domain([
+									d3.min(cities3, function(c) { return d3.min(c.values, function(d) { return d.Rent_Index; }); }),
+									d3.max(cities3, function(c) { return d3.max(c.values, function(d) { return d.Rent_Index; }); })
+								  ]); 
+								}
+								else if(section == "Restaurant_Price_Index") {
+									y.domain([
+									d3.min(cities3, function(c) { return d3.min(c.values, function(d) { return d.Restaurant_Price_Index; }); }),
+									d3.max(cities3, function(c) { return d3.max(c.values, function(d) { return d.Restaurant_Price_Index; }); })
+								  ]); 
+								}
+								else if(section == "Local_Purchasing_Power_Index") {
+									y.domain([
+									d3.min(cities3, function(c) { return d3.min(c.values, function(d) { return d.Local_Purchasing_Power_Index; }); }),
+									d3.max(cities3, function(c) { return d3.max(c.values, function(d) { return d.Local_Purchasing_Power_Index; }); })
+								  ]); 
+								}
+								else if(section == "Cost_of_Living_Plus_Rent_Index") {
+									y.domain([
+									d3.min(cities3, function(c) { return d3.min(c.values, function(d) { return d.Cost_of_Living_Plus_Rent_Index; }); }),
+									d3.max(cities3, function(c) { return d3.max(c.values, function(d) { return d.Cost_of_Living_Plus_Rent_Index; }); })
+								  ]); 
+								}
+
+								z.domain(cities3.map(function(c) { return c.key; }));
+
+								/*
+								g3.append("g")
+								  .attr("class", "annotation-group")
+								  .call(make_annotations2)
+								*/
+								
+								// add the X gridlines
+								g3.append("g")			
+									  .attr("class", "grid")
+									  .attr("transform", "translate(0," + height + ")")
+									  .call(make_x_gridlines()
+										  .tickSize(-height)
+										  .tickFormat("")
+									  )
+
+								// add the Y gridlines
+								g3.append("g")			
+									  .attr("class", "grid")
+									  .call(make_y_gridlines()
+										  .tickSize(-width)
+										  .tickFormat("")
+									  )
+
+								g3.append("g")
+									  .append("text") 
+									  .attr("transform", "translate(" + (width / 2) + " ," +	(height + margin.top + 20) + ")")
+									  .style("text-anchor", "middle")
+									  .text("Year"); 
+
+								g3.append("g")
+									  .attr("class", "axis axis--x")
+									  .attr("transform", "translate(0," + height + ")")
+									  .call(d3.axisBottom(x).tickFormat(d3.format('.4'))); 
+								
+								var y_text;
+								if(section == "Groceries_Index") {
+									y_text = "Groceries Index"; 
+								}
+								else if(section == "Rent_Index") {
+									y_text = "Rent Index";  
+								}
+								else if(section == "Restaurant_Price_Index") {
+									y_text = "Restaurant Price Index";  
+								}
+								else if(section == "Local_Purchasing_Power_Index") {
+									y_text = "Local Purchasing Power Index";  
+								}
+								else if(section == "Cost_of_Living_Plus_Rent_Index") {
+									y_text = "Cost of Living Plus Rent Index";  
+								}
+								
+								g3.append("g")
+									  .attr("class", "axis axis--y")
+									  .call(d3.axisLeft(y))
+									  .append("text")
+									  .attr("transform", "rotate(-90)")
+									  .attr("y", -45)
+									  .attr("dy", "0.71em")
+									  .attr("fill", "#000")
+									  .text(y_text);
+
+								var city3 = g3.selectAll(".city")
+									.data(cities3)
+									.enter().append("g")
+									.attr("class", "city");
+
+								city3.append("path")
+									  .attr("class", "line")
+									  .attr("d", function(d) { return line3(d.values); })
+									  .style("stroke", function(d) { return z(d.key); });
+
+								city3.append("text")
+									  .datum(function(d) { return {City: d.key, value: d.values[d.values.length - 1]}; })
+									  .attr("transform", function(d) { 
+									  if(section == "Groceries_Index") {
+											return "translate(" + x(d.value.Year) + "," + y(d.value.Groceries_Index) + ")";  
+										}
+										else if(section == "Rent_Index") {
+											return "translate(" + x(d.value.Year) + "," + y(d.value.Rent_Index) + ")";   
+										}
+										else if(section == "Restaurant_Price_Index") {
+											return "translate(" + x(d.value.Year) + "," + y(d.value.Restaurant_Price_Index) + ")";   
+										}
+										else if(section == "Local_Purchasing_Power_Index") {
+											return "translate(" + x(d.value.Year) + "," + y(d.value.Local_Purchasing_Power_Index) + ")";  
+										}
+										else if(section == "Cost_of_Living_Plus_Rent_Index") {
+											return "translate(" + x(d.value.Year) + "," + y(d.value.Cost_of_Living_Plus_Rent_Index) + ")";  
+										}
+									  
+									  })
+									  .attr("x", 3)
+									  .attr("dy", "0.35em")
+									  .style("font", "10px sans-serif")
+									  .text(function(d) { return d.City; });
+							
+								});
+							
+							});	
+		
+							function type(d, _, columns) {
+							  d.Year = +d.Year;
+							  d.Cost_of_Living_Index = +d.Cost_of_Living_Index;
+							  d.Cost_of_Living_Plus_Rent_Index = +d.Cost_of_Living_Plus_Rent_Index;
+							  d.Groceries_Index = +d.Groceries_Index;
+							  d.Local_Purchasing_Power_Index = +d.Local_Purchasing_Power_Index;
+							  d.Rent_Index = +d.Rent_Index;
+							  d.Restaurant_Price_Index = +d.Restaurant_Price_Index;
+							  d.Unemployment_Rate = +d.Unemployment_Rate;
+		  
+							  return d;
+							}
+							
+						</script>
+
 					</div>
 			</div>	
 		</div>
