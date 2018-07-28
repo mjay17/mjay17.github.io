@@ -68,6 +68,7 @@
 		.right-div {
 			overflow: hidden;
 			color: black;
+			margin-left: 75px;
 		}
 		
 		.about {
@@ -116,7 +117,7 @@
 								width = svg.attr("width") - margin.left - margin.right,
 								height = svg.attr("height") - margin.top - margin.bottom,
 							g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-							g.append('text').html('Cost of Living Index for big U.S. metropolitan cities').attr('x', 275);
+							g.append('text').html('Cost of Living Index for big U.S. metropolitan cities').attr('x', 250);
 
 							var x = d3.scaleTime().range([0, width]),
 								y = d3.scaleLinear().range([height, 0]),
@@ -233,7 +234,6 @@
 								  .append("text")
 								  .attr("transform", "rotate(-90)")
 								  .attr("y", -45)
-								  .attr("fill", "#000")
 								  .text("Cost of Living Index");
 							
 							// add legend   
