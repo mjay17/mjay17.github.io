@@ -249,7 +249,7 @@
 							  .enter()
 							  .append("rect")
 							  .attr("x", width + 25)
-							  .attr("y", function(d, i){ return i *  20;})
+							  .attr("y", function(d, i){ return i *  10;})
 							  .attr("width", 10)
 							  .attr("height", 10)
 							  .style("fill", function(d) { 
@@ -261,7 +261,7 @@
 							  .enter()
 							  .append("text")
 							  .attr("x", width + 38)
-							  .attr("y", function(d, i){ return i *  20 + 9;})
+							  .attr("y", function(d, i){ return i *  10 + 9;})
 							  .text(function(d) {
 								return d.key;
 							  });
