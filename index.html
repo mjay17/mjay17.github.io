@@ -54,6 +54,17 @@
 			padding: 6px 6px 6px 6px;
 		}
 		
+		.go-home {
+			position: relative;
+			bottom: 10px;
+			left: 450px;
+			font: bold 14px verdana;
+			text-decoration: none;
+			background-color: lightgrey;
+			color: #333333;
+			padding: 6px 6px 6px 6px;
+		}
+		
 		.left-div {
 			float: left;
 			width: 20%;
@@ -83,6 +94,17 @@
 			background: yellow;
 			box-shadow: 2px 2px 1px #888;
 		}
+		
+		.tooltip {
+			position: absolute;
+			z-index: 10;
+		}
+
+		.tooltip p {
+			background-color: white;
+			border: gray 1px solid;
+			padding: 2px;
+		}
 
 	</style>
 </head>
@@ -107,7 +129,7 @@
 					<div class="left-div">
 						<br><br><br><br><br><br>
 						<p><font size="6" face="verdana">Cost of Living Index</font></p>
-						<font size="4" face="verdana">It is a relative indicator of consumer goods prices, including groceries, restaurants, transportation and utilities. It doesn't include accommodation expenses such as rent or mortgage.<br><br></font>
+						<font size="4" face="verdana">It is a relative indicator of consumer goods prices, including groceries, restaurants, transportation and utilities. It doesn't include accommodation expenses such as rent or mortgage.</font><br>
 					</div>    
 					<div class="right-div">
 						<svg id = "svg1" width = "960" height = "500"></svg>
@@ -120,6 +142,11 @@
 							g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 							g.append('text').style("font", "20px sans-serif").text('Cost of Living Index for big U.S. metropolitan cities').attr('x', 220);
 
+							// add a tooltip to the page - not to the svg itself!
+							var tooltip = d3.select("body")
+      							.append("div")
+      							.attr("class", "tooltip");
+      	
 							var x = d3.scaleTime().range([0, width]),
 								y = d3.scaleLinear().range([height, 0]),
 								z = d3.scaleOrdinal(d3.schemeCategory20);
@@ -287,6 +314,21 @@
 								  .attr("dy", "0.35em")
 								  .style("font", "10px sans-serif");
 								  //.text(function(d) { return d.City; });
+								  
+							city.attr("cx", function(d) {
+								return x(d.value.Year);
+							})
+							.attr("cy", function(d) {
+								return y(d.value.Cost_of_Living_Index);
+							})
+							.attr("r", 4);
+
+							// Adding all the mouse events for the tooltips!
+
+							city
+							.on("mouseover", mouseoverFunc) // see below...
+      						.on("mousemove", mousemoveFunc) // see below...
+      						.on("mouseout", mouseoutFunc); // see below...
 							});	
 		
 							function type(d, _, columns) {
@@ -302,6 +344,24 @@
 							  return d;
 							}
 							
+							function mouseoverFunc(d) {
+								return tooltip
+									.style("display", null) // this removes the display none setting from it
+									.html("<p>Year: " + d.year +
+											  "<br>CoLI: " + d.Cost_of_Living_Index + " kt</p>");
+							}
+
+							function mousemoveFunc(d) {
+								console.log("events", window.event, d3.event);
+								return tooltip
+									.style("top", (d3.event.pageY - 10) + "px" )
+									.style("left", (d3.event.pageX + 10) + "px");
+							}
+
+							function mouseoutFunc(d) {
+								return tooltip.style("display", "none");  // this sets it to invisible!
+							}
+							
 						</script>
 					</div> 
 				</div>
@@ -310,19 +370,19 @@
 				<div>
 					<div class="left-div">
 						<br><br><br><br><br><br>
-						<p><font size="6">Unemployment Rate</font></p>
-						<font size="4">It tells us the percentage of the labor force that is unemployed.<br><br></font>
+						<p><font size="6" face="verdana">Unemployment Rate</font></p>
+						<font size="4" face="verdana">It tells us the percentage of the labor force that is unemployed.<br><br></font>
 					</div>    
 					<div class="right-div">
 						<svg id = "svg2" width = "960" height = "500"></svg>
 						<script type="text/javascript">
 	
 							var svg2 = d3.select("#svg2"),
-								margin = {top: 20, right: 100, bottom: 40, left: 60},
+								margin = {top: 20, right: 120, bottom: 40, left: 60},
 								width = svg.attr("width") - margin.left - margin.right,
 								height = svg.attr("height") - margin.top - margin.bottom,
 							g2 = svg2.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-							g2.append('text').html('Unemployment Rate for large US metropolitan areas').attr('x', 275);
+							g2.append('text').style("font", "20px sans-serif").text('Unemployment Rate for big U.S. metropolitan cities').attr('x', 250);
 
 							var x = d3.scaleTime().range([0, width]),
 								y = d3.scaleLinear().range([height, 0]),
@@ -425,6 +485,7 @@
 								  .append("text") 
 								  .attr("transform", "translate(" + (width / 2) + " ," +	(height + margin.top + 20) + ")")
 								  .style("text-anchor", "middle")
+								  .style("font", "15px sans-serif")
 								  .text("Year"); 
 
 							g2.append("g")
@@ -440,7 +501,37 @@
 								  .attr("y", -45)
 								  .attr("dy", "0.71em")
 								  .attr("fill", "#000")
+								  .style("font", "15px sans-serif")
 								  .text("Unemployment Rate");
+							
+							// add legend   
+							var legend2 = g2.append("g")
+							  .attr("class", "legend")
+							  .attr("height", 100)
+							  .attr("width", 120)
+							  .attr('transform', 'translate(-20,50)');    
+	  
+							legend2.selectAll('rect')
+							  .data(cities)
+							  .enter()
+							  .append("rect")
+							  .attr("x", width + 23)
+							  .attr("y", function(d, i){ return i *  18;})
+							  .attr("width", 10)
+							  .attr("height", 10)
+							  .style("fill", function(d) { 
+								return z(d.key);
+							  });
+	  
+							legend2.selectAll('text')
+							  .data(cities)
+							  .enter()
+							  .append("text")
+							  .attr("x", width + 36)
+							  .attr("y", function(d, i){ return i *  18 + 9;})
+							  .text(function(d) {
+								return d.key;
+							  });
 
 							var city2 = g2.selectAll(".city")
 								.data(cities2)
@@ -457,17 +548,9 @@
 								  .attr("transform", function(d) { return "translate(" + x(d.value.Year) + "," + y(d.value.Unemployment_Rate) + ")"; })
 								  .attr("x", 3)
 								  .attr("dy", "0.35em")
-								  .style("font", "10px sans-serif")
-								  .text(function(d) { return d.City; });
+								  .style("font", "10px sans-serif");
+								  //.text(function(d) { return d.City; });
 								
-							/*d3.select('#index')
-								.on("change", function () {
-								var sect = document.getElementById("index");
-								var section = sect.options[sect.selectedIndex].value;
-								
-								make_plot(plot_data, section);
-							});*/
-							
 							});	
 		
 							function type(d, _, columns) {
@@ -491,9 +574,12 @@
 		<div class="section" id="section-3">
 			<div>
 					<div class="left-div">
-						<br><br><br><br><br><br>
-						<p><font size="6">Breakdown of Cost of Living Indexes</font></p>
-						<font size="4">Now let's analyze various cost of living indexes in the selected large US metropolitan areas.<br><br></font>
+						<br><br><br>
+						<p><font size="6" face="verdana">Breakdown of Cost of Living Indexes</font></p>
+						<font size="4" face="verdana">These indexes are relative to New York City (NYC). Which means that for New York City, each index should be 100(%). If another city has, for example, rent index of 120, it means that on an average in that city rents are 20% more expensive than in New York City. If a city has rent index of 70, that means on an average in that city rents are 30% less expensive than in New York City.</font><br><br>
+						<font size="4" face="verdana">Groceries Index is an estimation of grocery prices in the city compared to NYC.</font><br><br>
+						<font size="4" face="verdana">Restaurant Price Index is a comparison of prices of meals and drinks in restaurants and bars compared to NYC.</font><br><br>
+						<font size="4" face="verdana">Rent Index is an estimation of prices of renting apartments in the city compared to NYC.</font>
 					</div>    
 					<div class="right-div">
 						<select id = "index">
@@ -516,11 +602,11 @@
 								var svg3 = d3.select("#svg3");
 								svg3.selectAll("*").remove();
 								
-								var	margin = {top: 20, right: 100, bottom: 40, left: 60},
+								var	margin = {top: 20, right: 120, bottom: 40, left: 60},
 									width = svg.attr("width") - margin.left - margin.right,
 									height = svg.attr("height") - margin.top - margin.bottom,
 								g3 = svg3.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-								g3.append('text').html('Various Cost of Living Indexes for large US metropolitan areas').attr('x', 275);
+								g3.append('text').style("font", "20px sans-serif").text('Various Cost of Living Indexes for big U.S. metropolitan cities').attr('x', 250);
 
 								var x = d3.scaleTime().range([0, width]),
 									y = d3.scaleLinear().range([height, 0]),
@@ -668,6 +754,7 @@
 									  .append("text") 
 									  .attr("transform", "translate(" + (width / 2) + " ," +	(height + margin.top + 20) + ")")
 									  .style("text-anchor", "middle")
+									  .style("font", "15px sans-serif")
 									  .text("Year"); 
 
 								g3.append("g")
@@ -700,8 +787,38 @@
 									  .attr("y", -45)
 									  .attr("dy", "0.71em")
 									  .attr("fill", "#000")
+									  .style("font", "15px sans-serif")
 									  .text(y_text);
 
+								// add legend   
+								var legend3 = g3.append("g")
+								  .attr("class", "legend")
+								  .attr("height", 100)
+								  .attr("width", 120)
+								  .attr('transform', 'translate(-20,50)');    
+	  
+								legend3.selectAll('rect')
+								  .data(cities)
+								  .enter()
+								  .append("rect")
+								  .attr("x", width + 23)
+								  .attr("y", function(d, i){ return i *  18;})
+								  .attr("width", 10)
+								  .attr("height", 10)
+								  .style("fill", function(d) { 
+									return z(d.key);
+								  });
+	  
+								legend3.selectAll('text')
+								  .data(cities)
+								  .enter()
+								  .append("text")
+								  .attr("x", width + 36)
+								  .attr("y", function(d, i){ return i *  18 + 9;})
+								  .text(function(d) {
+									return d.key;
+								  });
+							  
 								var city3 = g3.selectAll(".city")
 									.data(cities3)
 									.enter().append("g")
@@ -734,8 +851,8 @@
 									  })
 									  .attr("x", 3)
 									  .attr("dy", "0.35em")
-									  .style("font", "10px sans-serif")
-									  .text(function(d) { return d.City; });
+									  .style("font", "10px sans-serif");
+									  //.text(function(d) { return d.City; });
 							
 								});
 							
@@ -761,7 +878,58 @@
 		</div>
 		<div class="section" id="section-4">
 			<div class="about" style="margin-left: 450px; margin-right: 450px;">
-				<p><font size = "8" color="black">About this Visualization</font></p>
+				<p><font size = "8" color="black" face="verdana">About this Visualization</font></p>
+				<p align="left"><font size="5" color="black"><strong>Narrative Visualization Structure:</strong></font><br>
+				<font size="4" color="black">
+					This narrative visualization follows an interactive slideshow hybrid structure. We walk viewer through a slideshow and in each slide there is an opportunity for viewer to explore details or skip to the next slide if they so desire.<br>
+					This narrative walks viewer through global trends in life expectancy.
+				</font>
+				</p>
+				
+				<p align="left"><font size="5" color="black"><strong>Scenes</strong></font><br>
+					<font size="4" color="black">
+						I have used <a href="https://alvarotrigo.com/fullPage/">fullPage.js library</a> for slide show effect. This library help me built a coherent narrative that can be easily tracked. Webpages are easily navigated either with a mouse scrolling or by clicking on specific page on the page navigation on the right.
+					</font>
+				</p>	
+				
+				<p align="left"><font size="5" color="black"><strong>Annotations</strong></font><br>
+					<font size="4" color="black">
+						Various annotations are used in the pages:<br>
+						The first page includes the overview and the key points of the narrative<br>
+						In the following pages you can see annotations describing axes and titles<br>
+						You can also see dynamic tooltips on the global life expectancy chart that provide additional information<br>
+						A certain portion of the chart is also highlighted to draw viewer's attention to certain data point<br>
+						Legend has also been provided on the charts
+					</font>
+				</p>	
+
+				<p align="left"><font size="5" color="black"><strong>Triggers</strong></font><br>
+					<font size="4" color="black">
+						You can hover your mouse over the global life expectancy chart for a tooltip to appear showing you the values for all the areas for that specific data point
+					</font>
+				</p>		
+				
+				<p align="left"><font size="5" color="black"><strong>Parameters</strong></font><br>
+					<font size="4" color="black">
+						On the page showing healthy life expectancy vs total life expectancy a dropdown menu is a parameter that is used to filter the data based on the year.<br>
+					</font>
+				</p>					
+
+				<p align="left"><font size="5" color="black"><strong>Browser requirements</strong></font><br>
+					<font size="4" color="black">
+						This website works with Chrome and Firefox. Please don't use Internet Explorer.<br>
+					</font>
+				</p>		
+
+				<p align="left"><font size="5" color="black"><strong>Data</strong></font><br>
+					<font size="4" color="black">
+						All data used in this project is available at the following websites:<br>
+						<a href="https://ourworldindata.org/life-expectancy#life-expectancy-and-healthy-life-expectancy">https://ourworldindata.org/life-expectancy#life-expectancy-and-healthy-life-expectancy<a><br>
+						<a href = "https://esa.un.org/unpd/wpp/Download/Standard/Population/">https://esa.un.org/unpd/wpp/Download/Standard/Population/</a>
+					</font>
+				</p><br>	
+				
+				<a class="go-home" href="#homePage">Home</a>
 			</div>
 		</div>
 	</div>
