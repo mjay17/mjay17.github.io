@@ -418,7 +418,7 @@
 
 							city2.append("path")
 								  .attr("class", "line")
-								  .attr("d", function(d) { return line(d.values); })
+								  .attr("d", function(d) { return line2(d.values); })
 								  .style("stroke", function(d) { return z(d.key); });
 
 							city2.append("text")
