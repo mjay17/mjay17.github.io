@@ -74,6 +74,13 @@
 			margin-left: 250px; 
 			margin-right: 250px;
 		}
+		
+		.legend {
+			padding: 5px;
+			font: 10px sans-serif;
+			background: yellow;
+			box-shadow: 2px 2px 1px #888;
+		}
 
 	</style>
 </head>
@@ -98,7 +105,7 @@
 					<div class="left-div">
 						<br><br><br><br><br><br>
 						<p><font size="6">Cost of Living Indexes</font></p>
-						<font size="4">First let's see how is the cost of living in selected large US metropolitan areas.<br><br></font>
+						<font size="4">First let's see how is the cost of living in the selected large US metropolitan areas.<br><br></font>
 					</div>    
 					<div class="right-div">
 						<svg id = "svg1" width = "960" height = "500"></svg>
@@ -229,7 +236,41 @@
 								  .attr("dy", "0.71em")
 								  .attr("fill", "#000")
 								  .text("Cost of Living Index");
-
+							
+							// add legend   
+							var legend = g.append("g")
+							  .attr("class", "legend")
+								//.attr("x", w - 65)
+								//.attr("y", 50)
+							  .attr("height", 100)
+							  .attr("width", 100)
+							.attr('transform', 'translate(-20,50)')    
+	  
+	
+							legend.selectAll('rect')
+							  .data(cities)
+							  .enter()
+							  .append("rect")
+							  .attr("x", w - 65)
+							  .attr("y", function(d, i){ return i *  20;})
+							  .attr("width", 10)
+							  .attr("height", 10)
+							  .style("fill", function(d) { 
+								var color = color_hash[cities.indexOf(d)][1];
+								return color;
+							  })
+	  
+							legend.selectAll('text')
+							  .data(cities)
+							  .enter()
+							  .append("text")
+							  .attr("x", w - 52)
+							  .attr("y", function(d, i){ return i *  20 + 9;})
+							  .text(function(d) {
+								var text = color_hash[cities.indexOf(d)][0];
+								return text;
+							  });
+							
 							var city = g.selectAll(".city")
 								.data(cities)
 								.enter().append("g")
@@ -280,7 +321,7 @@
 					<div class="left-div">
 						<br><br><br><br><br><br>
 						<p><font size="6">Unemployment Rate</font></p>
-						<font size="4">Now let's see how is the unemployment rate in selected large US metropolitan areas.<br><br></font>
+						<font size="4">Now let's see how is the unemployment rate in the selected large US metropolitan areas.<br><br></font>
 					</div>    
 					<div class="right-div">
 						<svg id = "svg2" width = "960" height = "500"></svg>
@@ -462,7 +503,7 @@
 					<div class="left-div">
 						<br><br><br><br><br><br>
 						<p><font size="6">Breakdown of Cost of Living Indexes</font></p>
-						<font size="4">Now let's analyze various cost of living indexes in selected large US metropolitan areas.<br><br></font>
+						<font size="4">Now let's analyze various cost of living indexes in the selected large US metropolitan areas.<br><br></font>
 					</div>    
 					<div class="right-div">
 						<select id = "index">
