@@ -318,7 +318,7 @@
 							function drawTooltip() {
 								  const year = Math.floor((x.invert(d3.mouse(tipBox.node())[0]) + 5) / 10) * 10;
 
-								  states.sort((a, b) => {
+								  cities.sort((a, b) => {
 									return b.values.find(h => h.year == year).Cost_of_Living_Index - a.values.find(h => h.year == year).Cost_of_Living_Index;
 								})  
 
@@ -504,7 +504,7 @@
 							  .attr('transform', 'translate(-20,50)');    
 	  
 							legend2.selectAll('rect')
-							  .data(cities)
+							  .data(cities2)
 							  .enter()
 							  .append("rect")
 							  .attr("x", width + 23)
@@ -516,7 +516,7 @@
 							  });
 	  
 							legend2.selectAll('text')
-							  .data(cities)
+							  .data(cities2)
 							  .enter()
 							  .append("text")
 							  .attr("x", width + 36)
