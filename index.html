@@ -284,6 +284,175 @@
 					</div>    
 					<div class="right-div">
 						<svg id = "svg2" width = "960" height = "500"></svg>
+						<script type="text/javascript">
+	
+							var svg2 = d3.select("#svg2"),
+								margin = {top: 20, right: 100, bottom: 40, left: 60},
+								width = svg.attr("width") - margin.left - margin.right,
+								height = svg.attr("height") - margin.top - margin.bottom,
+							g = svg2.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+							g.append('text').html('Unemployment Rate for large US metropolitan areas').attr('x', 275);
+
+							var x = d3.scaleTime().range([0, width]),
+								y = d3.scaleLinear().range([height, 0]),
+								z = d3.scaleOrdinal(d3.schemeCategory20);
+							
+							var parseTime = d3.timeParse("%Y%m%d");
+							
+							// gridlines in x axis function
+							function make_x_gridlines() {		
+								return d3.axisBottom(x)
+									.ticks(5)
+							}
+
+							// gridlines in y axis function
+							function make_y_gridlines() {		
+								return d3.axisLeft(y)
+									.ticks(5)
+							}
+							
+							var line = d3.line()
+								.curve(d3.curveBasis)
+								.x(function(d) { return x(d.Year); })
+								.y(function(d, s) { return y(d.Unemployment_Rate); });
+							
+			
+							const annotations2 = [{
+							  note: {
+								label: "Longer text to show text wrapping",
+								title: "Annotations :)"
+							  },
+							  //can use x, y directly instead of data
+							  data: { Year: 2015, Unemployment_Rate: 5.7 },
+							  dy: 50,
+							  dx: 40,
+							  subject: {
+								radius: 20,
+								radiusPadding: 5
+							  }
+							}]
+			
+							const make_annotations2 = d3.annotation()
+							  .editMode(false)
+							  //also can set and override in the note.padding property
+							  //of the annotation object
+							  .notePadding(10)
+							  .type(anot_type)
+							  //accessors & accessorsInverse not needed
+							  //if using x, y in annotations JSON
+							  .accessors({
+								x: d => x(d.Year),
+								y: d => y(d.Unemployment_Rate)
+							  })
+							  .accessorsInverse({
+								 Year: d => x.invert(d.x),
+								 Unemployment_Rate: d => y.invert(d.y)
+							  })
+							  .annotations(annotations2)
+		
+							d3.tsv("/data/DS-Data.txt", type, function(error, data) {
+								if (error) throw error;
+
+								var cities = d3.nest()
+									.key(function(d) { return d.City; })
+									.entries(data);
+								
+							x.domain([
+								d3.min(cities, function(c) { return d3.min(c.values, function(d) { return d.Year; }); }),
+								d3.max(cities, function(c) { return d3.max(c.values, function(d) { return d.Year; }); })
+							  ]);
+
+							y.domain([
+								d3.min(cities, function(c) { return d3.min(c.values, function(d) { return d.Unemployment_Rate; }); }),
+								d3.max(cities, function(c) { return d3.max(c.values, function(d) { return d.Unemployment_Rate; }); })
+							  ]);
+
+							z.domain(cities.map(function(c) { return c.key; }));
+
+							g.append("g")
+							  .attr("class", "annotation-group")
+							  .call(make_annotations2)
+
+							// add the X gridlines
+							g.append("g")			
+								  .attr("class", "grid")
+								  .attr("transform", "translate(0," + height + ")")
+								  .call(make_x_gridlines()
+									  .tickSize(-height)
+									  .tickFormat("")
+								  )
+
+							// add the Y gridlines
+							g.append("g")			
+								  .attr("class", "grid")
+								  .call(make_y_gridlines()
+									  .tickSize(-width)
+									  .tickFormat("")
+								  )
+
+							g.append("g")
+								  .append("text") 
+								  .attr("transform", "translate(" + (width / 2) + " ," +	(height + margin.top + 20) + ")")
+								  .style("text-anchor", "middle")
+								  .text("Year"); 
+
+							g.append("g")
+								  .attr("class", "axis axis--x")
+								  .attr("transform", "translate(0," + height + ")")
+								  .call(d3.axisBottom(x).tickFormat(d3.format('.4'))); 
+
+							g.append("g")
+								  .attr("class", "axis axis--y")
+								  .call(d3.axisLeft(y))
+								  .append("text")
+								  .attr("transform", "rotate(-90)")
+								  .attr("y", -45)
+								  .attr("dy", "0.71em")
+								  .attr("fill", "#000")
+								  .text("Unemployment Rate");
+
+							var city = g.selectAll(".city")
+								.data(cities)
+								.enter().append("g")
+								  .attr("class", "city");
+
+							city.append("path")
+								  .attr("class", "line")
+								  .attr("d", function(d) { return line(d.values); })
+								  .style("stroke", function(d) { return z(d.key); });
+
+							city.append("text")
+								  .datum(function(d) { return {City: d.key, value: d.values[d.values.length - 1]}; })
+								  .attr("transform", function(d) { return "translate(" + x(d.value.Year) + "," + y(d.value.Unemployment_Rate) + ")"; })
+								  .attr("x", 3)
+								  .attr("dy", "0.35em")
+								  .style("font", "10px sans-serif")
+								  .text(function(d) { return d.City; });
+								
+							/*d3.select('#index')
+								.on("change", function () {
+								var sect = document.getElementById("index");
+								var section = sect.options[sect.selectedIndex].value;
+								
+								make_plot(plot_data, section);
+							});*/
+							
+							});	
+		
+							function type(d, _, columns) {
+							  d.Year = +d.Year;
+							  d.Cost_of_Living_Index = +d.Cost_of_Living_Index;
+							  d.Cost_of_Living_Plus_Rent_Index = +d.Cost_of_Living_Plus_Rent_Index;
+							  d.Groceries_Index = +d.Groceries_Index;
+							  d.Local_Purchasing_Power_Index = +d.Local_Purchasing_Power_Index;
+							  d.Rent_Index = +d.Rent_Index;
+							  d.Restaurant_Price_Index = +d.Restaurant_Price_Index;
+							  d.Unemployment_Rate = +d.Unemployment_Rate;
+		  
+							  return d;
+							}
+							
+						</script>
 					</div> 
 				</div>
 			</div>
