@@ -482,8 +482,10 @@
 								var section = sect.options[sect.selectedIndex].value;
 								
 								
-								var svg3 = d3.select("#svg3"),
-									margin = {top: 20, right: 100, bottom: 40, left: 60},
+								var svg3 = d3.select("#svg3");
+								svg3.selectAll("*").remove();
+								
+								var	margin = {top: 20, right: 100, bottom: 40, left: 60},
 									width = svg.attr("width") - margin.left - margin.right,
 									height = svg.attr("height") - margin.top - margin.bottom,
 								g3 = svg3.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
