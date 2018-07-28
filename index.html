@@ -114,6 +114,9 @@
 							var x = d3.scaleTime().range([0, width]),
 								y = d3.scaleLinear().range([height, 0]),
 								z = d3.scaleOrdinal(d3.schemeCategory20);
+							
+							var parseTime = d3.timeParse("%Y%m%d");
+							
 							// gridlines in x axis function
 							function make_x_gridlines() {		
 								return d3.axisBottom(x)
@@ -125,6 +128,11 @@
 								return d3.axisLeft(y)
 									.ticks(5)
 							}
+							
+							var line = d3.line()
+								.curve(d3.curveBasis)
+								.x(function(d) { return x(d.Year); })
+								.y(function(d, s) { return y(d.Cost_of_Living_Index); });
 							
 							const anot_type = d3.annotationCalloutCircle;
 			
@@ -167,14 +175,6 @@
 								var cities = d3.nest()
 									.key(function(d) { return d.City; })
 									.entries(data);
-							
-							
-							var parseTime = d3.timeParse("%Y%m%d");
-			
-							var line = d3.line()
-								.curve(d3.curveBasis)
-								.x(function(d) { return x(d.Year); })
-								.y(function(d, s) { return y(d.Cost_of_Living_Index); });
 								
 							x.domain([
 								d3.min(cities, function(c) { return d3.min(c.values, function(d) { return d.Year; }); }),
