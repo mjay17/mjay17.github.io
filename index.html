@@ -51,7 +51,7 @@
 		.go-home {
 			position: relative;
 			bottom: 10px;
-			left: 450px;
+			left: 750px;
 			font: bold 14px verdana;
 			text-decoration: none;
 			background-color: lightgrey;
@@ -78,8 +78,8 @@
 		}
 		
 		.about {
-			margin-left: 250px; 
-			margin-right: 250px;
+			margin-left: 100px; 
+			margin-right: 100px;
 		}
 		
 		.legend {
@@ -152,16 +152,44 @@
 			
 							const annotations = [{
 							  note: {
-								label: "Longer text to show text wrapping",
-								title: "Annotations :)"
+								label: "Indices are relative to NYC so it's 100(%)",
+								title: "New York, NY"
 							  },
 							  //can use x, y directly instead of data
-							  data: { Year: 2016, Cost_of_Living_Index: 100 },
+							  data: { Year: 2015, Cost_of_Living_Index: 100 },
 							  dy: 50,
 							  dx: 40,
 							  subject: {
-								radius: 20,
-								radiusPadding: 5
+								radius: 10,
+								radiusPadding: 1
+							  }
+							},
+							{
+							  note: {
+								label: "Moved up a lot and crossed NYC",
+								title: "San Francisco, CA"
+							  },
+							  //can use x, y directly instead of data
+							  data: { Year: 2016, Cost_of_Living_Index: 103.36 },
+							  dy: 50,
+							  dx: 40,
+							  subject: {
+								radius: 10,
+								radiusPadding: 1
+							  }
+							},
+							{
+							  note: {
+								label: "Max. % moved down",
+								title: "Austin, TX"
+							  },
+							  //can use x, y directly instead of data
+							  data: { Year: 2016, Cost_of_Living_Index: 70.23 },
+							  dy: 30,
+							  dx: 20,
+							  subject: {
+								radius: 10,
+								radiusPadding: 1
 							  }
 							}]
 			
@@ -1032,58 +1060,77 @@
 			</div>	
 		</div>
 		<div class="section" id="section-4">
-			<div class="about" style="margin-left: 450px; margin-right: 450px;">
-				<p><font size = "8" color="black" face="verdana">About this Visualization</font></p>
-				<p align="left"><font size="5" color="black"><strong>Narrative Visualization Structure:</strong></font><br>
-				<font size="4" color="black">
-					This narrative visualization follows an interactive slideshow hybrid structure. We walk viewer through a slideshow and in each slide there is an opportunity for viewer to explore details or skip to the next slide if they so desire.<br>
+			<div class="about" style="margin-left: 10px; margin-right: 10px;">
+				<p><font size = "4" color="black" face="verdana">About this Narrative Visualization</font></p>
+				<p align="left"><font size="3" color="black" face="verdana"><strong>Topic</strong></font><br>
+				<font size="2" color="black" face="verdana">
+					Evaluate and find best 5 U.S. metropolitan cities to relocate.
+				</font>
+				</p>
+				
+				<p align="left"><font size="3" color="black" face="verdana"><strong>Visualization Structure</strong></font><br>
+				<font size="2" color="black" face="verdana">
+					This narrative visualization follows an interactive slideshow hybrid structure. We walk viewers through a slideshow and in our case 3 slides for "Cost of Living Index", "Unemployment Rate" and "Population Density" on the horizontal axis. There is an opportunity for viewers in a slide to explore details or drill down or move to the next slide. In our case "Breakdown of Cost of Living Indexes" slide on the vertical axis provides drill down experience.<br>
 					This narrative walks viewer through global trends in life expectancy.
 				</font>
 				</p>
 				
-				<p align="left"><font size="5" color="black"><strong>Scenes</strong></font><br>
-					<font size="4" color="black">
-						I have used <a href="https://alvarotrigo.com/fullPage/">fullPage.js library</a> for slide show effect. This library help me built a coherent narrative that can be easily tracked. Webpages are easily navigated either with a mouse scrolling or by clicking on specific page on the page navigation on the right.
+				<p align="left"><font size="3" color="black" face="verdana"><strong>Scenes</strong></font><br>
+					<font size="2" color="black" face="verdana">
+						Scenes (slides) in the visualization follow a template for visual consistency. We can move from scene to scene either with a mouse scrolling or by pressing directional keys on a keyboard or by clicking on specific page on the page navigation (black dots/circles) on the right or bottom. <br>
+						We also follow a similar layout and visual structure in these scenes. We present some context about the scene on the left and the visualization about the scene on the right. We keep the same font and style across all the scenes. We also maintain visual consistency across all the plots by using same "line" type, styles for x and y axes, positioning of legends and color scheme etc. <br>
+						Also, Scenes follow an order to best convey the message. We start off with the topic and present various aspects of the data with an opportunity to drill down to help user evaluate and make a decision. <br>
+						We maintain visual continuity between the scenes to avoid disorienting viewers by following the same transition style.
 					</font>
 				</p>	
 				
-				<p align="left"><font size="5" color="black"><strong>Annotations</strong></font><br>
-					<font size="4" color="black">
-						Various annotations are used in the pages:<br>
-						The first page includes the overview and the key points of the narrative<br>
-						In the following pages you can see annotations describing axes and titles<br>
-						You can also see dynamic tooltips on the global life expectancy chart that provide additional information<br>
-						A certain portion of the chart is also highlighted to draw viewer's attention to certain data point<br>
-						Legend has also been provided on the charts
+				<p align="left"><font size="3" color="black" face="verdana"><strong>Annotations</strong></font><br>
+					<font size="2" color="black" face="verdana">
+						Annotations in the visualization/charts follow a template (circular form i.e. text message with a drop line and circle to mark the data point) for visual consistency. 
+						Various annotations are used in the scenes:<br>
+						- The first scene includes the topic of the narrative<br>
+						- In following scenes; <br> 
+						&nbsp;&nbsp;&nbsp;&nbsp; Viewers can see annotations describing axes, titles and legends<br>
+						&nbsp;&nbsp;&nbsp;&nbsp; A certain portion of the chart is also highlighted to draw viewer's attention to some key data points<br>
+						Annotations are described by the parameters and cleared when we move between different scenes (slides) as different parameters are set by the scenes that control the charts of the scenes.  
 					</font>
 				</p>	
-
-				<p align="left"><font size="5" color="black"><strong>Triggers</strong></font><br>
-					<font size="4" color="black">
-						You can hover your mouse over the global life expectancy chart for a tooltip to appear showing you the values for all the areas for that specific data point
+				
+				<p align="left"><font size="3" color="black" face="verdana"><strong>Parameters</strong></font><br>
+					<font size="2" color="black" face="verdana">
+						Various parameters are used in the scenes:<br>
+						- Page/Scene <br>
+						- Year <br>
+						- Metropolitan cities <br>
+						- Cost of Living Index <br>
+						- Unemployment Rate <br>
+						- Population Density <br>
+						- Breakdown of Cost of Living Indexes - Groceries Index, Rent Index, Restaurant Price Index, Local Purchasing Power Index and Cost of Living Plus Rent Index <br>
+						Year, Metropolitan cities and Cost of Living Index control state for the "Cost of Living Index" scene; Year, Metropolitan cities and Unemployment Rate control state for the "Unemployment Rate" scene; Year, Metropolitan cities and Population Density control state for the "Population Density" scene; Year, Metropolitan cities and various Cost of Living Indexes control state for the "Breakdown of Cost of Living Indexes" scene.
+					</font>
+				</p>
+				
+				<p align="left"><font size="3" color="black" face="verdana"><strong>Triggers</strong></font><br>
+					<font size="2" color="black" face="verdana">
+					Various triggers are used:<br>
+						- Page/Scene triggers what parameters to use for that particular scene that is getting presented. <br>
+						- "Choose Index" dropdown on the "Breakdown of Cost of Living Indexes" scene triggers what index parameter to use for the plot. <br>
+					Page navigation (black dots/circles) on the right or bottom of a scene with a big circle for the current page and small dot for the other pages communicate to user that they can move from scene to scene either with a mouse scrolling or by pressing directional keys on a keyboard or by clicking on specific page on the page navigation. Also, white arrows are displayed to move left or right if other slides are available horizontally.
 					</font>
 				</p>		
 				
-				<p align="left"><font size="5" color="black"><strong>Parameters</strong></font><br>
-					<font size="4" color="black">
-						On the page showing healthy life expectancy vs total life expectancy a dropdown menu is a parameter that is used to filter the data based on the year.<br>
-					</font>
-				</p>					
-
-				<p align="left"><font size="5" color="black"><strong>Browser requirements</strong></font><br>
-					<font size="4" color="black">
-						This website works with Chrome and Firefox. Please don't use Internet Explorer.<br>
+				<p align="left"><font size="3" color="black" face="verdana"><strong>Browser Requirements</strong></font><br>
+					<font size="2" color="black" face="verdana">
+						I have tested this website on Chrome and Firefox browsers.<br>
 					</font>
 				</p>		
 
-				<p align="left"><font size="5" color="black"><strong>Data</strong></font><br>
-					<font size="4" color="black">
-						All data used in this project is available at the following websites:<br>
-						<a href="https://ourworldindata.org/life-expectancy#life-expectancy-and-healthy-life-expectancy">https://ourworldindata.org/life-expectancy#life-expectancy-and-healthy-life-expectancy<a><br>
-						<a href = "https://esa.un.org/unpd/wpp/Download/Standard/Population/">https://esa.un.org/unpd/wpp/Download/Standard/Population/</a>
+				<p align="left"><font size="3" color="black" face="verdana"><strong>Data and Other Libraries</strong></font><br>
+					<font size="2" color="black" face="verdana">
+						Data for the unemployment rate, population and area for the U.S. metropolitan cities was collected from the <a href="https://factfinder.census.gov/">United States Census Bureau<a> and Data for the cost of living indexes for the U.S. metropolitan cities was collected from <a href = "https://www.numbeo.com/cost-of-living/">Numbeo</a>.<br>
+						I have used <a href="https://alvarotrigo.com/fullPage/">fullPage.js library</a> for the slide show effect.
 					</font>
-				</p><br>	
-				
+				</p>	
 				<a class="go-home" href="#homePage">Home</a>
 			</div>
 		</div>
