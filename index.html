@@ -183,39 +183,6 @@
 							  })
 							  .annotations(annotations)
 							  
-							const annotations11 = [{
-							  note: {
-								label: "Another",
-								title: "San Francisco, CA"
-							  },
-							  //can use x, y directly instead of data
-							  data: { Year: 2016, Cost_of_Living_Index: 103.36 },
-							  dy: 50,
-							  dx: 40,
-							  subject: {
-								radius: 10,
-								radiusPadding: 1
-							  }
-							}]
-			
-							const make_annotations11 = d3.annotation()
-							  .editMode(false)
-							  //also can set and override in the note.padding property
-							  //of the annotation object
-							  .notePadding(10)
-							  .type(anot_type)
-							  //accessors & accessorsInverse not needed
-							  //if using x, y in annotations JSON
-							  .accessors({
-								x: d => x(d.Year),
-								y: d => y(d.Cost_of_Living_Index)
-							  })
-							  .accessorsInverse({
-								 Year: d => x.invert(d.x),
-								 Cost_of_Living_Index: d => y.invert(d.y)
-							  })
-							  .annotations(annotations11)
-		
 							d3.tsv("/data/DS-Data.txt", type, function(error, data) {
 								if (error) throw error;
 
@@ -239,10 +206,6 @@
 							  .attr("class", "annotation-group")
 							  .call(make_annotations)
 							  
-							g.append("g")
-							  .attr("class", "annotation-group")
-							  .call(make_annotations11)
-
 							// add the X gridlines
 							g.append("g")			
 								  .attr("class", "grid")
@@ -399,7 +362,7 @@
 							  //can use x, y directly instead of data
 							  data: { Year: 2016, Unemployment_Rate: 3.1 },
 							  dy: 10,
-							  dx: 5,
+							  dx: 20,
 							  subject: {
 								radius: 10,
 								radiusPadding: 1
@@ -601,7 +564,7 @@
 							  },
 							  //can use x, y directly instead of data
 							  data: { Year: 2017, Population_Density: 2974.47 },
-							  dy: -50,
+							  dy: 50,
 							  dx: -40,
 							  subject: {
 								radius: 10,
