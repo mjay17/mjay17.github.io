@@ -163,20 +163,6 @@
 								radius: 10,
 								radiusPadding: 1
 							  }
-							},
-							{
-							  note: {
-								label: "Moved up a lot and crossed NYC",
-								title: "San Francisco, CA"
-							  },
-							  //can use x, y directly instead of data
-							  data: { Year: 2016, Cost_of_Living_Index: 103 },
-							  dy: 50,
-							  dx: 40,
-							  subject: {
-								radius: 10,
-								radiusPadding: 1
-							  }
 							}]
 			
 							const make_annotations = d3.annotation()
@@ -196,6 +182,39 @@
 								 Cost_of_Living_Index: d => y.invert(d.y)
 							  })
 							  .annotations(annotations)
+							  
+							const annotations11 = [{
+							  note: {
+								label: "Another",
+								title: "San Francisco, CA"
+							  },
+							  //can use x, y directly instead of data
+							  data: { Year: 2016, Cost_of_Living_Index: 103.36 },
+							  dy: 50,
+							  dx: 40,
+							  subject: {
+								radius: 10,
+								radiusPadding: 1
+							  }
+							}]
+			
+							const make_annotations11 = d3.annotation()
+							  .editMode(false)
+							  //also can set and override in the note.padding property
+							  //of the annotation object
+							  .notePadding(10)
+							  .type(anot_type)
+							  //accessors & accessorsInverse not needed
+							  //if using x, y in annotations JSON
+							  .accessors({
+								x: d => x(d.Year),
+								y: d => y(d.Cost_of_Living_Index)
+							  })
+							  .accessorsInverse({
+								 Year: d => x.invert(d.x),
+								 Cost_of_Living_Index: d => y.invert(d.y)
+							  })
+							  .annotations(annotations11)
 		
 							d3.tsv("/data/DS-Data.txt", type, function(error, data) {
 								if (error) throw error;
@@ -219,6 +238,10 @@
 							g.append("g")
 							  .attr("class", "annotation-group")
 							  .call(make_annotations)
+							  
+							g.append("g")
+							  .attr("class", "annotation-group")
+							  .call(make_annotations11)
 
 							// add the X gridlines
 							g.append("g")			
@@ -370,16 +393,16 @@
 			
 							const annotations2 = [{
 							  note: {
-								label: "Longer text",
-								title: "Annotations"
+								label: "Showed max. YoY decrease",
+								title: "Denver, CO"
 							  },
 							  //can use x, y directly instead of data
-							  data: { Year: 2015, Unemployment_Rate: 5.7 },
-							  dy: 50,
-							  dx: 40,
+							  data: { Year: 2016, Unemployment_Rate: 3.1 },
+							  dy: 10,
+							  dx: 5,
 							  subject: {
-								radius: 20,
-								radiusPadding: 5
+								radius: 10,
+								radiusPadding: 1
 							  }
 							}]
 			
@@ -573,16 +596,16 @@
 		
 							const annotations4 = [{
 							  note: {
-								label: "Longer text to show",
-								title: "Annotations 4"
+								label: "Showed Max. YoY increase",
+								title: "Austin, TX"
 							  },
 							  //can use x, y directly instead of data
-							  data: { Year: 2015, Population_Density: 1369.43 },
-							  dy: 50,
-							  dx: 40,
+							  data: { Year: 2017, Population_Density: 2974.47 },
+							  dy: -50,
+							  dx: -40,
 							  subject: {
-								radius: 20,
-								radiusPadding: 5
+								radius: 10,
+								radiusPadding: 1
 							  }
 							}]
 		
@@ -1047,7 +1070,7 @@
 		</div>
 		<div class="section" id="section-4">
 			<div class="about" style="margin-left: 10px; margin-right: 10px;">
-				<p><font size = "4" color="black" face="verdana">About this Narrative Visualization</font></p>
+				<p><font size = "4" color="#144082" face="verdana"><strong>About this Narrative Visualization</strong></font></p>
 				<p align="left"><font size="3" color="black" face="verdana"><strong>Topic</strong></font><br>
 				<font size="2" color="black" face="verdana">
 					Evaluate and find best 5 U.S. metropolitan cities to relocate.
@@ -1129,7 +1152,7 @@
 			sectionsColor : ['#ccc', '#eff7fc', '#f9f6ea', '#fff'],
 			autoScrolling:true,
 			scrollHorizontally: true,
-			navigationTooltips: ['homePage', 'secondPage', 'thirdPage', 'glossaryPage'],
+			navigationTooltips: ['Home', 'Slides', 'Drilldown', 'About'],
 			scrollingSpeed: 1000,
             navigation: true,
             slidesNavigation: true,
