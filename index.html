@@ -362,7 +362,7 @@
 							  //can use x, y directly instead of data
 							  data: { Year: 2016, Unemployment_Rate: 3.1 },
 							  dy: 10,
-							  dx: 20,
+							  dx: 30,
 							  subject: {
 								radius: 10,
 								radiusPadding: 1
@@ -1087,7 +1087,7 @@
 					Various triggers are used:<br>
 						- Page/Scene triggers what parameters to use for that particular scene that is getting presented. <br>
 						- "Choose Index" dropdown on the "Breakdown of Cost of Living Indexes" scene triggers what index parameter to use for the plot. <br>
-					Page navigation (black dots/circles) on the right or bottom of a scene with a big circle for the current page and small dot for the other pages communicate to user that they can move from scene to scene either with a mouse scrolling or by pressing directional keys on a keyboard or by clicking on specific page on the page navigation. Also, white arrows are displayed to move left or right if other slides are available horizontally.
+					Page navigation (black dots/circles) on the right or bottom of a scene with a big circle for the current page and small dot for the other pages communicate to user that they can move from scene to scene either with a mouse scrolling or by pressing directional keys on a keyboard or by clicking on specific page on the page navigation. Page navigation also displays tool tip with page/scene name. Also, white arrows are displayed to move left or right if other slides are available horizontally.
 					</font>
 				</p>		
 				
@@ -1112,7 +1112,7 @@
 		var fullPage = new fullpage('#fullpage', {
 			//options here
 			anchors:['homePage', 'secondPage', 'thirdPage', 'glossaryPage'],
-			sectionsColor : ['#ccc', '#eff7fc', '#f9f6ea', '#fff'],
+			sectionsColor : ['#e2e0e0', '#e2e0e0', '#e2e0e0', '#e2e0e0'],
 			autoScrolling:true,
 			scrollHorizontally: true,
 			navigationTooltips: ['Home', 'Slides', 'Drilldown', 'About'],
